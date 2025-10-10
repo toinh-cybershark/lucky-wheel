@@ -1,0 +1,13 @@
+@import "tailwindcss";
+.wheel-spinning-loading {
+  animation: spin-infinite 1s linear infinite;
+}
+
+@keyframes spin-infinite {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
