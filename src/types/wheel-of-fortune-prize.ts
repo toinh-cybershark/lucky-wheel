@@ -12,7 +12,6 @@ export type WheelOfFortunePrize = {
 };
 interface NearMissEffect {
   /**
-   * Hướng của ô mà người chơi sẽ "suýt" trúng.
    * 'before': Kim sẽ dừng sát mép với ô NẰM TRƯỚC ô trúng thưởng này.
    * 'after': Kim sẽ dừng sát mép với ô NẰM SAU ô trúng thưởng này.
    */

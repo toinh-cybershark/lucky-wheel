@@ -39,7 +39,7 @@ export const WheelOfFortune = forwardRef<
     wheelRotationsCount = 5,
     className,
   } = props;
-  const [showDebugLines, setShowDebugLines] = useState(false); // test debug line when development
+  const [showDebugLines] = useState(false); // test debug line when development
   const wheelRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLDivElement>(null);
   const wheelSegmentDegrees =
