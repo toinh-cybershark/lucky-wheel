@@ -7,7 +7,7 @@ import {
 } from "react";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { getPrizeWinner } from "../utils/get-prize-winner";
-import { getRotationFromMatrix } from "../utils/src/utils/get-rotation-from-matrix";
+import { getRotationFromMatrix } from "../utils/get-rotation-from-matrix";
 const SPIN_DIRECTION = -1;
 const COLLISION_ANGLE_OFFSET = -20;
 const API_WAIT_SPIN_SPEED = 0.3;
