@@ -7,10 +7,11 @@ import {
 } from "react";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { getPrizeWinner } from "../utils/get-prize-winner";
-import { getRotationFromMatrix } from "../utils/get-rotation-from-matrix";
+import { getRotationFromMatrix } from "../utils/src/utils/get-rotation-from-matrix";
 const SPIN_DIRECTION = -1;
-const COLLISION_ANGLE_OFFSET = -20; // Con số tinh chỉnh của bạn được giữ nguyên
-const API_WAIT_SPIN_SPEED = 0.3; // Số vòng quay mỗi giây trong khi chờ API
+const COLLISION_ANGLE_OFFSET = -20;
+const API_WAIT_SPIN_SPEED = 0.3;
+
 export function useWheelSpin(
   prizes: WheelOfFortunePrize[],
   onSpinStart: () => void,
@@ -27,24 +28,18 @@ export function useWheelSpin(
   const [animationTimingFunction, setAnimationTimingFunction] =
     useState<string>("ease-out");
   const winnerRef = useRef<WheelOfFortunePrize | null>(null);
-
-  const spinStartTimeRef = useRef<number>(0); // Ref mới để theo dõi thời gian bắt đầu quay
+  const spinStartTimeRef = useRef<number>(0);
   const tickAudioRef = useRef<HTMLAudioElement | null>(null);
   const animationFrameId = useRef<number>(0);
-
-  // Các ref để theo dõi góc quay tích lũy
   const totalRotationRef = useRef<number>(0);
   const previousAngleRef = useRef<number>(0);
-
   const lastPassedPegIndex = useRef<number>(-1);
-  const pegAngle = 360 / prizes.length;
-
+  const pegAngle = prizes.length > 0 ? 360 / prizes.length : 0;
   useEffect(() => {
     tickAudioRef.current = new Audio("/tick.mp3");
     tickAudioRef.current.volume = 0.5;
   }, []);
 
-  // HÀM NÀY ĐƯỢC GIỮ NGUYÊN HOÀN TOÀN, VÌ NÓ ĐÃ HOẠT ĐỘNG TỐT
   const collisionCheckLoop = () => {
     if (!wheelRef.current || !pointerRef.current) {
       animationFrameId.current = requestAnimationFrame(collisionCheckLoop);
@@ -70,7 +65,6 @@ export function useWheelSpin(
         const sound = tickAudioRef.current.cloneNode() as HTMLAudioElement;
         sound.play().catch((e) => console.error("Audio play failed:", e));
       }
-
       const pRef = pointerRef.current;
       pRef.classList.remove("pointer-tick-animation");
       void pRef.offsetWidth;
@@ -78,30 +72,21 @@ export function useWheelSpin(
 
       lastPassedPegIndex.current = currentPegIndex;
     }
-
     animationFrameId.current = requestAnimationFrame(collisionCheckLoop);
   };
-
-  // LOGIC QUAY CHÍNH ĐƯỢC NÂNG CẤP LÊN "HAI GIAI ĐOẠN"
   useEffect(() => {
     const startFullSpinProcess = async () => {
       if (!isSpinning) return;
-
-      // === GIAI ĐOẠN 1: BÁNH XE QUAY NGAY LẬP TỨC ===
       onSpinStart();
       spinStartTimeRef.current = Date.now();
-
-      // Reset trạng thái hiệu ứng va chạm
       lastPassedPegIndex.current = -1;
       totalRotationRef.current = 0;
       previousAngleRef.current = getRotationFromMatrix(wheelRef.current!);
       animationFrameId.current = requestAnimationFrame(collisionCheckLoop);
-
-      // Bắt đầu một vòng quay "ảo" dài với tốc độ không đổi (linear)
-      const maxWaitDurationMs = 100000; // Thời gian chờ tối đa: 100 giây
+      const maxWaitDurationMs = 100000;
       const degreesPerSecond = API_WAIT_SPIN_SPEED * 360;
-      const initialSpinRotation = SPIN_DIRECTION * degreesPerSecond * (maxWaitDurationMs / 1000);
-
+      const initialSpinRotation =
+        SPIN_DIRECTION * degreesPerSecond * (maxWaitDurationMs / 1000);
       startTransition(() => {
         setAnimationTimingFunction("cubic-bezier(0.4, 0, 0.6, 1)");
         setRotation(initialSpinRotation);
@@ -109,33 +94,38 @@ export function useWheelSpin(
           wheelRef.current.style.transitionDuration = `${maxWaitDurationMs}ms`;
         }
       });
-
-      // === GỌI API SONG SONG KHI BÁNH XE ĐANG QUAY ===
-      // Giả sử bạn đã có hàm `getPrizeWinner` như hướng dẫn ở câu trả lời trước
       const [winnerIndex, prize] = await getPrizeWinner(prizes);
-
       if (winnerIndex < 0 || !prize) {
         console.error("Không thể xác định giải thưởng từ API!");
         setIsSpinning(false);
         return;
       }
       winnerRef.current = prize;
-
-      // === GIAI ĐOẠN 2: TÍNH ĐIỂM DỪNG VÀ BẮT ĐẦU GIẢM TỐC ===
       const fullRotations = 360 * wheelRotationsCount;
       const wheelSegmentDegrees = 360 / prizes.length;
-      const safeZoneMargin = wheelSegmentDegrees * 0.1;
-      const randomOffset =
-        Math.random() * (wheelSegmentDegrees - safeZoneMargin * 2) +
-        safeZoneMargin;
+
+      let randomOffset;
+      const nearMiss = prize.nearMissEffect;
+      const shouldUseNearMiss = nearMiss && Math.random() < nearMiss.chance;
+
+      if (shouldUseNearMiss) {
+        if (nearMiss.targetDirection === 'before') {
+          randomOffset = nearMiss.proximity * wheelSegmentDegrees;
+        } else { // targetDirection === 'after'
+          randomOffset = wheelSegmentDegrees - (nearMiss.proximity * wheelSegmentDegrees);
+        }
+      } else {
+        // default
+        const safeZoneMargin = wheelSegmentDegrees * 0.1;
+        randomOffset =
+          Math.random() * (wheelSegmentDegrees - safeZoneMargin * 2) +
+          safeZoneMargin;
+      }
       const baseAngle = winnerIndex * wheelSegmentDegrees;
       const targetAngle = baseAngle + randomOffset;
       const finalRotation = -(fullRotations + targetAngle);
-
-      // Tính toán thời gian còn lại để animation giảm tốc trông tự nhiên
       const timeElapsed = Date.now() - spinStartTimeRef.current;
-      const remainingTime = Math.max(4000, animationDurationInMs - timeElapsed); // Ít nhất 4s để giảm tốc
-
+      const remainingTime = Math.max(4000, animationDurationInMs - timeElapsed);
       startTransition(() => {
         setAnimationTimingFunction("cubic-bezier(0.2, 0.6, 0.4, 1)");
         setRotation(finalRotation);
@@ -143,8 +133,6 @@ export function useWheelSpin(
           wheelRef.current.style.transitionDuration = `${remainingTime}ms`;
         }
       });
-
-      // Dọn dẹp sau khi animation giảm tốc kết thúc
       setTimeout(() => {
         setIsSpinning(false);
         if (winnerRef.current) {
@@ -156,12 +144,9 @@ export function useWheelSpin(
     startFullSpinProcess();
 
     return () => {
-      // Hàm cleanup chính (ít được dùng vì logic nằm trong isSpinning)
       cancelAnimationFrame(animationFrameId.current);
     };
-    // Chỉ phụ thuộc vào `isSpinning` để trigger toàn bộ quá trình
   }, [isSpinning]);
-
   useEffect(() => {
     if (!isSpinning) {
       cancelAnimationFrame(animationFrameId.current);
@@ -176,17 +161,14 @@ export function useWheelSpin(
     if (isSpinning) return;
     setSkipWheelAnimation(true);
     setRotation(0);
-
     setTimeout(() => {
-      // Reset lại transition duration trước khi bắt đầu quay
       if (wheelRef.current) {
-        wheelRef.current.style.transitionDuration = ""; // Xóa style inline để CSS class có hiệu lực
+        wheelRef.current.style.transitionDuration = "";
       }
       setSkipWheelAnimation(false);
       setIsSpinning(true);
     }, 50);
   };
-
   return {
     isSpinning,
     rotation,

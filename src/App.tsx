@@ -111,6 +111,11 @@ function App() {
       key: "200_xu",
       value: "200 Xu",
       probability: 0.5,
+      nearMissEffect: {
+        targetDirection: 'after', 
+        proximity: 0,          
+        chance: 0.8,              
+      },
     },
     {
       color: "#fc9ebe",
@@ -151,6 +156,11 @@ function App() {
       key: "hoan1021021",
       value: "Hoàn 1.021.021",
       probability: 0.04,
+       nearMissEffect: {
+        targetDirection: 'before', 
+        proximity: 0.1,          
+        chance: 0.8,              
+      },
     },
     {
       color: "#fc9ebe",
@@ -163,6 +173,11 @@ function App() {
       key: "400_xu",
       value: "400 Xu",
       probability: 0.1,
+      nearMissEffect: {
+        targetDirection: 'before', 
+        proximity: 0.01,         
+        chance: 0.9,              
+      },
     },
     {
       color: "#feeef6",

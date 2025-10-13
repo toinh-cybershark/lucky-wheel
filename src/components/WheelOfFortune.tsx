@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useWheelSpin } from "../hooks/useWheelSpin";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
@@ -16,9 +16,9 @@ export type WheelOfFortuneProps = {
   onSpinEnd: (prize: WheelOfFortunePrize) => void;
   onSpinStart?: () => void;
   wheelBorderColor?:
-  | `rgb(${number}, ${number}, ${number})`
-  | `hsl(${number}, ${number}%, ${number}%)`
-  | `#${string}`;
+    | `rgb(${number}, ${number}, ${number})`
+    | `hsl(${number}, ${number}%, ${number}%)`
+    | `#${string}`;
   animationDurationInMs?: number;
   wheelRotationsCount?: number;
   className?: string;
@@ -33,13 +33,15 @@ export const WheelOfFortune = forwardRef<
     wheelPointer,
     wheelSpinButton,
     onSpinEnd,
-    onSpinStart = () => { },
+    onSpinStart = () => {},
     wheelBorderColor = "#FFFFFF",
     animationDurationInMs = 5000,
     wheelRotationsCount = 5,
     className,
   } = props;
-
+  const [showDebugLines, setShowDebugLines] = useState(false); // test debug line when development
+  const wheelRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef<HTMLDivElement>(null);
   const wheelSegmentDegrees =
     prizes.length > 0 ? parseFloat((360 / prizes.length).toFixed(4)) : 0;
   const animationDurationInSeconds = Math.round(animationDurationInMs / 1000);
@@ -56,6 +58,8 @@ export const WheelOfFortune = forwardRef<
     onSpinEnd,
     animationDurationInMs,
     wheelRotationsCount,
+    wheelRef,
+    pointerRef
   );
 
   useImperativeHandle(ref, () => ({
@@ -72,11 +76,15 @@ export const WheelOfFortune = forwardRef<
     >
       <div className="aspect-square relative w-full overflow-hidden">
         {wheelPointer && (
-          <div className="absolute z-20 top-[12px] left-[50%] translate-x-[-50%] ">
+          <div
+            ref={pointerRef}
+            className="absolute z-20 top-[12px] left-[50%] translate-x-[-50%] "
+          >
             {wheelPointer}
           </div>
         )}
         <div
+          ref={wheelRef}
           className={`absolute top-0 left-0 w-full h-full overflow-hidden rounded-[50%] `}
           style={{
             boxShadow:
@@ -97,8 +105,9 @@ export const WheelOfFortune = forwardRef<
               key={item.key}
               className="absolute top-0 left-0 flex justify-center w-full h-full text-center origin-center"
               style={{
-                transform: `rotate(${wheelSegmentDegrees * index + wheelSegmentDegrees / 2
-                  }deg)`,
+                transform: `rotate(${
+                  wheelSegmentDegrees * index + wheelSegmentDegrees / 2
+                }deg)`,
               }}
             >
               <div
@@ -115,6 +124,16 @@ export const WheelOfFortune = forwardRef<
               </div>
             </div>
           ))}
+          {showDebugLines &&
+            prizes.map((_, index) => (
+              <div
+                key={`debug-line-${index}`}
+                className="absolute top-0 left-1/2 -translate-x-1/2 h-1/2 w-0.5 bg-red-500 origin-bottom"
+                style={{
+                  transform: `rotate(${wheelSegmentDegrees * index}deg)`,
+                }}
+              />
+            ))}
         </div>
       </div>
       {/* Footer */}
