@@ -1,12 +1,11 @@
 import { useRef, useState, type HTMLAttributes } from "react";
 import Confetti from 'react-confetti';
-import { Coin, MoneyBag } from "./assets/icons";
+import CustomCursor from "./components/CustomCursor";
 import {
   WheelOfFortune,
   type WheelOfFortuneRef,
 } from "./components/WheelOfFortune";
 import type { WheelOfFortunePrize } from "./types/wheel-of-fortune-prize";
-import CustomCursor from "./components/CustomCursor";
 type SpinButtonProps = React.ComponentProps<"button">;
 function SpinButton({ ...props }: SpinButtonProps) {
   return (
