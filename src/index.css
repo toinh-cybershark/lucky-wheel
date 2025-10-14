@@ -31,7 +31,32 @@
     transform: rotate(2deg); /* bật  về phía trước rồi trở lại */
   }
 }
-
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+.fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+.fade-out-up {
+  animation: fade-out-up 0.4s ease-in forwards;
+}
 .pointer-tick-animation {
   transform-origin: 50% 20%; /* Đặt tâm xoay gần đỉnh của kim */
   animation: pointer-wiggle 0.1s ease-out;

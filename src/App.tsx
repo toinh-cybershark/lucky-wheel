@@ -1,4 +1,5 @@
 import { useRef, useState, type HTMLAttributes } from "react";
+import Confetti from 'react-confetti';
 import { Coin, MoneyBag } from "./assets/icons";
 import {
   WheelOfFortune,
@@ -10,7 +11,10 @@ function SpinButton({ ...props }: SpinButtonProps) {
   return (
     <button
       {...props}
-      className="group relative p-0 font-mono text-xs font-light uppercase bg-transparent border-none outline-none cursor-pointer w-36"
+      style={{
+        cursor: 'inherit'
+      }}
+      className="group relative p-0 font-mono text-xs font-light uppercase bg-transparent border-none outline-none   w-36"
     >
       {/* Hiệu ứng bóng đổ */}
       <span className="absolute top-0 left-0 w-full h-full bg-[#bb6541] bg-opacity-25 rounded-lg transform translate-y-0.5 transition duration-[200ms] ease-[cubic-bezier(0.3,0.7,0.4,1)] group-hover:translate-y-1 group-hover:duration-[150ms] group-active:translate-y-px" />
@@ -66,6 +70,11 @@ function App() {
       key: "8000_xu",
       value: "8000 Xu",
       probability: 0.08,
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
+      },
     },
     {
       color: "#feeef6",
@@ -78,6 +87,11 @@ function App() {
       key: "6000_xu",
       value: "6000 Xu",
       probability: 0.08,
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
+      },
     },
     {
       color: "#fc9ebe",
@@ -99,6 +113,11 @@ function App() {
       key: "4000_xu",
       value: "4000 Xu",
       probability: 0.1,
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
+      },
     },
     {
       color: "#feeef6",
@@ -112,9 +131,9 @@ function App() {
       value: "200 Xu",
       probability: 0.5,
       nearMissEffect: {
-        targetDirection: 'after', 
-        proximity: 0,          
-        chance: 0.8,              
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
       },
     },
     {
@@ -142,6 +161,11 @@ function App() {
       key: "24000_xu",
       value: "24000 Xu",
       probability: 0.05,
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
+      },
     },
     {
       color: "#feeef6",
@@ -156,10 +180,10 @@ function App() {
       key: "hoan1021021",
       value: "Hoàn 1.021.021",
       probability: 0.04,
-       nearMissEffect: {
-        targetDirection: 'before', 
-        proximity: 0.1,          
-        chance: 0.8,              
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
       },
     },
     {
@@ -174,9 +198,9 @@ function App() {
       value: "400 Xu",
       probability: 0.1,
       nearMissEffect: {
-        targetDirection: 'before', 
-        proximity: 0.01,         
-        chance: 0.9,              
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
       },
     },
     {
@@ -189,43 +213,78 @@ function App() {
       key: "try_again",
       value: "Chúc may mắn lần sau",
       probability: 0.05,
+      nearMissEffect: {
+        targetDirection: 'before',
+        proximity: 0.05,
+        chance: 1,
+      },
     },
   ];
-
+  const [showModal, setShowModal] = useState(false);
+  const [animate, setAnimate] = useState("fade-in-up");
   const fortuneWheelRef = useRef<WheelOfFortuneRef>(null);
   const [prizeWinnerKey, setPrizeWinnerKey] = useState<string>("");
   console.log("🚀 ~ prizeWinnerKey:", prizeWinnerKey);
+  const handleSpinEnd = (prize: WheelOfFortunePrize) => {
+    setPrizeWinnerKey(prize.value);
+    setShowModal(true);
+    setAnimate("fade-in-up");
+  };
 
+  const handleCloseModal = () => {
+    setAnimate("fade-out-up");
+    setTimeout(() => {
+      setShowModal(false);
+      setPrizeWinnerKey("");
+    }, 400);
+  };
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 py-10">
-      <label className="text-2xl font-bold text-red-400 fixed text-nowrap left-1/2 top-5 -translate-x-1/2">
-        {prizeWinnerKey && <>Chúc mừng bạn đã nhận được: {prizeWinnerKey}</>}
-      </label>
-      <WheelOfFortune
-        className="max-w-lg"
-        ref={fortuneWheelRef}
-        prizes={wheelPrizes}
-        wheelPointer={
-          <PointerIcon
-            style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
-            className="size-12 text-white"
-          />
-        }
-        wheelSpinButton={
-          <SpinButton
-            style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
-            onMouseUp={() => fortuneWheelRef.current?.spin()}
-          />
-        }
-        onSpinStart={() => {
-          setPrizeWinnerKey("");
-        }}
-        onSpinEnd={(prize) => {
-          setPrizeWinnerKey(prize.value);
-        }}
-        animationDurationInMs={10000}
-      />
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 py-10 cursor-[url('/mouse.png'),_pointer]">
+        {showModal && (
+          <div
+            onClick={handleCloseModal}
+            className={`fixed bg-black/90 z-30 inset-0 flex items-center justify-center cursor-pointer ${animate}`}
+          >
+            <div
+              // onClick={(e) => e.stopPropagation()}
+              className="flex flex-col justify-center items-center gap-3 "
+            >
+              <img src="/gift.png" alt="Gift" className="max-w-md w-full" />
+              {/* <div className="text-2xl font-bold text-green-400 flex items-center p-4 bg-white/20 rounded-lg">
+                {prizeWinnerKey}
+              </div> */}
+            </div>
+            <Confetti recycle={false} numberOfPieces={500} />
+          </div>
+        )}
+
+        <WheelOfFortune
+          className="max-w-lg"
+          ref={fortuneWheelRef}
+          prizes={wheelPrizes}
+          wheelPointer={
+            <PointerIcon
+              style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
+              className="size-12 text-white"
+            />
+          }
+          wheelSpinButton={
+            <SpinButton
+              style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
+              onMouseUp={() => fortuneWheelRef.current?.spin()}
+            />
+          }
+          onSpinStart={() => {
+            setPrizeWinnerKey("");
+          }}
+          onSpinEnd={(prize) => {
+            handleSpinEnd(prize);
+          }}
+          animationDurationInMs={10000}
+        />
+      </div>
+    </>
   );
 }
 

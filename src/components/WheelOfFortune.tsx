@@ -16,9 +16,9 @@ export type WheelOfFortuneProps = {
   onSpinEnd: (prize: WheelOfFortunePrize) => void;
   onSpinStart?: () => void;
   wheelBorderColor?:
-    | `rgb(${number}, ${number}, ${number})`
-    | `hsl(${number}, ${number}%, ${number}%)`
-    | `#${string}`;
+  | `rgb(${number}, ${number}, ${number})`
+  | `hsl(${number}, ${number}%, ${number}%)`
+  | `#${string}`;
   animationDurationInMs?: number;
   wheelRotationsCount?: number;
   className?: string;
@@ -33,7 +33,7 @@ export const WheelOfFortune = forwardRef<
     wheelPointer,
     wheelSpinButton,
     onSpinEnd,
-    onSpinStart = () => {},
+    onSpinStart = () => { },
     wheelBorderColor = "#FFFFFF",
     animationDurationInMs = 5000,
     wheelRotationsCount = 5,
@@ -105,9 +105,8 @@ export const WheelOfFortune = forwardRef<
               key={item.key}
               className="absolute top-0 left-0 flex justify-center w-full h-full text-center origin-center"
               style={{
-                transform: `rotate(${
-                  wheelSegmentDegrees * index + wheelSegmentDegrees / 2
-                }deg)`,
+                transform: `rotate(${wheelSegmentDegrees * index + wheelSegmentDegrees / 2
+                  }deg)`,
               }}
             >
               <div
@@ -134,6 +133,11 @@ export const WheelOfFortune = forwardRef<
                 }}
               />
             ))}
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-blue-500 to-blue-600 p-4 rounded-full">
+          <div className="w-12 h-12">
+            <img src="/9proxy-logo.png" alt="" className="w-full h-full bg-white rounded-2xl" />
+          </div>
         </div>
       </div>
       {/* Footer */}

@@ -11,7 +11,7 @@ import { getRotationFromMatrix } from "../utils/get-rotation-from-matrix";
 const SPIN_DIRECTION = -1;
 const COLLISION_ANGLE_OFFSET = -20;
 const API_WAIT_SPIN_SPEED = 0.3;
-
+const DELAY_AFTER_SPIN = 2000;
 export function useWheelSpin(
   prizes: WheelOfFortunePrize[],
   onSpinStart: () => void,
@@ -126,6 +126,7 @@ export function useWheelSpin(
       const finalRotation = -(fullRotations + targetAngle);
       const timeElapsed = Date.now() - spinStartTimeRef.current;
       const remainingTime = Math.max(4000, animationDurationInMs - timeElapsed);
+      console.log("remainingTime", remainingTime);
       startTransition(() => {
         setAnimationTimingFunction("cubic-bezier(0.2, 0.6, 0.4, 1)");
         setRotation(finalRotation);
@@ -138,7 +139,7 @@ export function useWheelSpin(
         if (winnerRef.current) {
           onSpinEnd(winnerRef.current);
         }
-      }, remainingTime);
+      }, remainingTime + DELAY_AFTER_SPIN);
     };
 
     startFullSpinProcess();
