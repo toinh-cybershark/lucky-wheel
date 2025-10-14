@@ -8,10 +8,12 @@ import {
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { getPrizeWinner } from "../utils/get-prize-winner";
 import { getRotationFromMatrix } from "../utils/get-rotation-from-matrix";
+
 const SPIN_DIRECTION = -1;
 const COLLISION_ANGLE_OFFSET = -20;
 const API_WAIT_SPIN_SPEED = 0.3;
 const DELAY_AFTER_SPIN = 2000;
+const DEFAULT_ENABLE_POINTER_TICK = false;
 export function useWheelSpin(
   prizes: WheelOfFortunePrize[],
   onSpinStart: () => void,
@@ -19,7 +21,8 @@ export function useWheelSpin(
   animationDurationInMs: number,
   wheelRotationsCount: number,
   wheelRef: RefObject<HTMLDivElement | null>,
-  pointerRef: RefObject<HTMLDivElement | null>
+  pointerRef: RefObject<HTMLDivElement | null>,
+ 
 ) {
   const [, startTransition] = useTransition();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
@@ -35,6 +38,7 @@ export function useWheelSpin(
   const previousAngleRef = useRef<number>(0);
   const lastPassedPegIndex = useRef<number>(-1);
   const pegAngle = prizes.length > 0 ? 360 / prizes.length : 0;
+
   useEffect(() => {
     tickAudioRef.current = new Audio("/tick.mp3");
     tickAudioRef.current.volume = 0.5;
@@ -61,19 +65,23 @@ export function useWheelSpin(
     const currentPegIndex = Math.floor(offsetRotation / pegAngle);
 
     if (currentPegIndex > lastPassedPegIndex.current) {
-      if (tickAudioRef.current) {
-        const sound = tickAudioRef.current.cloneNode() as HTMLAudioElement;
-        sound.play().catch((e) => console.error("Audio play failed:", e));
+      if (DEFAULT_ENABLE_POINTER_TICK) {
+        if (tickAudioRef.current) {
+          const sound = tickAudioRef.current.cloneNode() as HTMLAudioElement;
+          sound.play().catch((e) => console.error("Audio play failed:", e));
+        }
+        const pRef = pointerRef.current;
+        if (pRef) {
+          pRef.classList.remove("pointer-tick-animation");
+          void pRef.offsetWidth; // Force reflow
+          pRef.classList.add("pointer-tick-animation");
+        }
       }
-      const pRef = pointerRef.current;
-      pRef.classList.remove("pointer-tick-animation");
-      void pRef.offsetWidth;
-      pRef.classList.add("pointer-tick-animation");
-
       lastPassedPegIndex.current = currentPegIndex;
     }
     animationFrameId.current = requestAnimationFrame(collisionCheckLoop);
   };
+
   useEffect(() => {
     const startFullSpinProcess = async () => {
       if (!isSpinning) return;
@@ -115,7 +123,6 @@ export function useWheelSpin(
           randomOffset = wheelSegmentDegrees - (nearMiss.proximity * wheelSegmentDegrees);
         }
       } else {
-        // default
         const safeZoneMargin = wheelSegmentDegrees * 0.1;
         randomOffset =
           Math.random() * (wheelSegmentDegrees - safeZoneMargin * 2) +
@@ -148,15 +155,18 @@ export function useWheelSpin(
       cancelAnimationFrame(animationFrameId.current);
     };
   }, [isSpinning]);
+
   useEffect(() => {
     if (!isSpinning) {
       cancelAnimationFrame(animationFrameId.current);
-      const pRef = pointerRef.current;
-      if (pRef) {
-        setTimeout(() => pRef.classList.remove("pointer-tick-animation"), 200);
+      if (DEFAULT_ENABLE_POINTER_TICK) {
+        const pRef = pointerRef.current;
+        if (pRef) {
+          setTimeout(() => pRef.classList.remove("pointer-tick-animation"), 200);
+        }
       }
     }
-  }, [isSpinning, pointerRef]);
+  }, [isSpinning, pointerRef, DEFAULT_ENABLE_POINTER_TICK]); 
 
   const spin = () => {
     if (isSpinning) return;
