@@ -188,10 +188,10 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [animate, setAnimate] = useState("fade-in-up");
   const fortuneWheelRef = useRef<WheelOfFortuneRef>(null);
-  const [prizeWinnerKey, setPrizeWinnerKey] = useState<string>("");
+  const [prizeWinnerKey, setPrizeWinnerKey] = useState<WheelOfFortunePrize | null>(null);
   console.log("🚀 ~ prizeWinnerKey:", prizeWinnerKey);
   const handleSpinEnd = (prize: WheelOfFortunePrize) => {
-    setPrizeWinnerKey(prize.value);
+    setPrizeWinnerKey(prize);
     setShowModal(true);
     setAnimate("fade-in-up");
   };
@@ -200,15 +200,15 @@ function App() {
     setAnimate("fade-out-up");
     setTimeout(() => {
       setShowModal(false);
-      setPrizeWinnerKey("");
+      setPrizeWinnerKey(null);
     }, 400);
   };
   return (
     <>
       <div style={{
-          backgroundImage: "url('/background.png')", backgroundSize: "cover",
-          backgroundPosition: "center",
-        }} className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 ">
+        backgroundImage: "url('/background.png')", backgroundSize: "cover",
+        backgroundPosition: "center",
+      }} className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 ">
         {showModal && (
           <div
             onClick={handleCloseModal}
@@ -218,9 +218,11 @@ function App() {
               // onClick={(e) => e.stopPropagation()}
               className="flex flex-col justify-center items-center gap-3 "
             >
-              <img src="/gift.png" alt="Gift" className="max-w-md w-full" />
-              <div className="text-2xl font-bold text-green-400 flex items-center p-4 bg-white/20 rounded-lg">
-                {prizeWinnerKey}
+              <div className="w-[420px] relative">
+                <img src="/gift.png" alt="Gift" className="max-w-md w-full" />
+                <div className="absolute bottom-[100px] text-base font-bold text-white flex items-center p-4 left-1/2 -translate-x-1/2">
+                  {prizeWinnerKey?.value}
+                </div>
               </div>
             </div>
             <Confetti recycle={false} numberOfPieces={1500} />
@@ -249,7 +251,7 @@ function App() {
                 />
               }
               onSpinStart={() => {
-                setPrizeWinnerKey("");
+                setPrizeWinnerKey(null);
               }}
               onSpinEnd={(prize) => {
                 handleSpinEnd(prize);
@@ -259,7 +261,7 @@ function App() {
           </div>
         </div>
       </div>
-      <CustomCursor/>
+      <CustomCursor />
     </>
   );
 }
