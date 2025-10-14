@@ -6,6 +6,7 @@ import {
   type WheelOfFortuneRef,
 } from "./components/WheelOfFortune";
 import type { WheelOfFortunePrize } from "./types/wheel-of-fortune-prize";
+import CustomCursor from "./components/CustomCursor";
 type SpinButtonProps = React.ComponentProps<"button">;
 function SpinButton({ ...props }: SpinButtonProps) {
   return (
@@ -14,26 +15,9 @@ function SpinButton({ ...props }: SpinButtonProps) {
       style={{
         cursor: 'inherit'
       }}
-      className="group relative p-0 font-mono text-xs font-light uppercase bg-transparent border-none outline-none   w-36"
+      className=""
     >
-      {/* Hiệu ứng bóng đổ */}
-      <span className="absolute top-0 left-0 w-full h-full bg-[#bb6541] bg-opacity-25 rounded-lg transform translate-y-0.5 transition duration-[200ms] ease-[cubic-bezier(0.3,0.7,0.4,1)] group-hover:translate-y-1 group-hover:duration-[150ms] group-active:translate-y-px" />
-
-      {/* Viền nút */}
-      <span className="absolute top-0 left-0 w-full h-full rounded-lg border-2 border-[#e67e22] bg-[#e67e22]" />
-
-      {/* Nút chính */}
-      <div className="relative flex flex-col items-center justify-center py-2 px-4 text-xs rounded-md transform -translate-y-1 bg-gradient-to-b from-[#ffda6a] to-[#ffb52e] gap-0.5 transition duration-[600ms] ease-[cubic-bezier(0.3,0.7,0.4,1)] group-hover:-translate-y-1.5 group-hover:duration-[150ms] group-active:-translate-y-0.5 brightness-100 group-hover:brightness-110 shadow-inner">
-        <span
-          className="text-xl font-black select-none tracking-wider"
-          style={{
-            color: "#9e1c0a",
-            textShadow: "0px 1px 1px rgba(255, 255, 255, 0.5)",
-          }}
-        >
-          QUAY
-        </span>
-      </div>
+      <img src="/spin.png" alt="Spin Button" className="size-[96px] rounded-full" />
     </button>
   );
 }
@@ -51,24 +35,16 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[#3d3f79]">8000 Xu</span>
-          <div className="flex flex-col items-center -space-y-3">
-            <div className="flex -space-x-3">
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-            </div>
-            <div className="flex -space-x-3">
-              <Coin width={"38px"} height={"38px"} />
-              <Coin width={"38px"} height={"38px"} />
-            </div>
+        <div className="flex flex-col items-center justify-end w-full mt-5">
+          <img src="/gift-200ips.png" alt="Gift 200 IPS" className="w-[33px] h-[40px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Free </p>
+            <p>200 IPs</p>
           </div>
         </div>
       ),
-      key: "8000_xu",
-      value: "8000 Xu",
+      key: "free_200_ips",
+      value: "Free 200 IPs",
       probability: 0.08,
       nearMissEffect: {
         targetDirection: 'before',
@@ -79,13 +55,16 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[#3d3f79]">6000 Xu</span>
-          <Coin width={"48px"} height={"48px"} />
+        <div className="flex flex-col items-center justify-end w-full mt-5">
+          <img src="/cloud-computing.png" alt="Gift 200 IPS" className="w-[44px] h-[34px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Free </p>
+            <p>20 GBs</p>
+          </div>
         </div>
       ),
-      key: "6000_xu",
-      value: "6000 Xu",
+      key: "free_20_gbs",
+      value: "Free 20 GBs",
       probability: 0.08,
       nearMissEffect: {
         targetDirection: 'before',
@@ -96,22 +75,16 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[#3d3f79]">4000 Xu</span>
-          <div className="flex flex-col items-center -space-y-3">
-            <div className="flex -space-x-3">
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-            </div>
-            <div className="flex -space-x-3">
-              <Coin width={"38px"} height={"38px"} />
-            </div>
+        <div className="flex flex-col items-center justify-end w-full mt-5">
+          <img src="/coupon30.png" alt="Gift 200 IPS" className="w-[36px] h-[33px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Sale </p>
+            <p>30% OFF</p>
           </div>
         </div>
       ),
-      key: "4000_xu",
-      value: "4000 Xu",
+      key: "sale_30_off",
+      value: "Sale 30% OFF",
       probability: 0.1,
       nearMissEffect: {
         targetDirection: 'before',
@@ -122,13 +95,13 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[#3d3f79]">200 Xu</span>
-          <Coin width={"48px"} height={"48px"} />
+        <div className="flex flex-col items-center justify-center w-full mt-10">
+          <img src="/sad-face.png" alt="Gift 200 IPS" className="w-[39px] h-[39px] object-cover" />
+
         </div>
       ),
-      key: "200_xu",
-      value: "200 Xu",
+      key: "sad_face",
+      value: "Sad Face",
       probability: 0.5,
       nearMissEffect: {
         targetDirection: 'before',
@@ -139,27 +112,16 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold text-[#3d3f79]">24000 Xu</span>
-          <div className="flex flex-col items-center -space-y-5">
-            <div className="flex -space-x-3">
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-              <Coin width={"28px"} height={"28px"} />
-            </div>
-            <div className="flex -space-x-3">
-              <Coin width={"38px"} height={"38px"} />
-              <Coin width={"38px"} height={"38px"} />
-              <Coin width={"38px"} height={"38px"} />
-            </div>
-            <Coin width={"48px"} height={"48px"} />
+        <div className="flex flex-col items-center justify-end w-full mt-7">
+          <img src="/bonus.png" alt="Gift 200 IPS" className="w-[44px] h-[28px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Add 25% </p>
+            <p>IP or GB</p>
           </div>
         </div>
       ),
-      key: "24000_xu",
-      value: "24000 Xu",
+      key: "add_25_ip_or_gb",
+      value: "Add 25% IP or GB",
       probability: 0.05,
       nearMissEffect: {
         targetDirection: 'before',
@@ -170,15 +132,16 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-xs font-bold text-[#3d3f79] w-full min-w-0 break-words">
-            Hoàn 1.021.021đ
-          </p>
-          <MoneyBag width={"58px"} height={"58px"} />
+        <div className="flex flex-col items-center justify-end w-full mt-4">
+          <img src="/badge.png" alt="Gift 200 IPS" className="w-[44px] h-[44px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Add 50%</p>
+            <p>IP or GB</p>
+          </div>
         </div>
       ),
-      key: "hoan1021021",
-      value: "Hoàn 1.021.021",
+      key: "add_50_ip_or_gb",
+      value: "Add 50% IP or GB",
       probability: 0.04,
       nearMissEffect: {
         targetDirection: 'before',
@@ -189,13 +152,16 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-xs font-bold text-[#3d3f79]">400 Xu</p>
-          <Coin width={"48px"} height={"48px"} />
+        <div className="flex flex-col items-center justify-end w-full mt-6">
+          <img src="/coupon20.png" alt="Gift 200 IPS" className="w-[36px] h-[34px] object-cover" />
+          <div className="font-bold text-black  text-wrap text-xs">
+            <p className="">Sale</p>
+            <p>20% OFF</p>
+          </div>
         </div>
       ),
-      key: "400_xu",
-      value: "400 Xu",
+      key: "sale_20_off",
+      value: "Sale 20% OFF",
       probability: 0.1,
       nearMissEffect: {
         targetDirection: 'before',
@@ -206,12 +172,12 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-xs font-bold text-[#3d3f79]">Chúc may mắn lần sau</p>
+        <div className="flex flex-col items-center justify-center w-full mt-10">
+          <img src="/sad-face.png" alt="Gift 200 IPS" className="w-[39px] h-[39px] object-cover" />
         </div>
       ),
       key: "try_again",
-      value: "Chúc may mắn lần sau",
+      value: "Sad Face",
       probability: 0.05,
       nearMissEffect: {
         targetDirection: 'before',
@@ -240,7 +206,10 @@ function App() {
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 py-10 cursor-[url('/mouse.png'),_pointer]">
+      <div style={{
+          backgroundImage: "url('/background.png')", backgroundSize: "cover",
+          backgroundPosition: "center",
+        }} className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 ">
         {showModal && (
           <div
             onClick={handleCloseModal}
@@ -251,39 +220,47 @@ function App() {
               className="flex flex-col justify-center items-center gap-3 "
             >
               <img src="/gift.png" alt="Gift" className="max-w-md w-full" />
-              {/* <div className="text-2xl font-bold text-green-400 flex items-center p-4 bg-white/20 rounded-lg">
+              <div className="text-2xl font-bold text-green-400 flex items-center p-4 bg-white/20 rounded-lg">
                 {prizeWinnerKey}
-              </div> */}
+              </div>
             </div>
-            <Confetti recycle={false} numberOfPieces={500} />
+            <Confetti recycle={false} numberOfPieces={1500} />
           </div>
         )}
-
-        <WheelOfFortune
-          className="max-w-lg"
-          ref={fortuneWheelRef}
-          prizes={wheelPrizes}
-          wheelPointer={
-            <PointerIcon
-              style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
-              className="size-12 text-white"
+        <div style={{
+          backgroundImage: "url('/background-container.png')", backgroundSize: "cover",
+          backgroundPosition: "center",
+        }} className="w-[1200px] h-[860px] relative ">
+          <div className="absolute  left-1/2 bottom-[210px] -translate-x-1/2" >
+            <img src="/label.png" alt="Background" className="w-full -mb-6 h-full object-cover max-w-[400px] max-h-[184px]" />
+            <WheelOfFortune
+              className="max-w-[420px]"
+              ref={fortuneWheelRef}
+              prizes={wheelPrizes}
+              wheelPointer={
+                <PointerIcon
+                  style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
+                  className="w-10 h-[60px] text-white object-cover"
+                />
+              }
+              wheelSpinButton={
+                <SpinButton
+                  style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
+                  onMouseUp={() => fortuneWheelRef.current?.spin()}
+                />
+              }
+              onSpinStart={() => {
+                setPrizeWinnerKey("");
+              }}
+              onSpinEnd={(prize) => {
+                handleSpinEnd(prize);
+              }}
+              animationDurationInMs={10000}
             />
-          }
-          wheelSpinButton={
-            <SpinButton
-              style={{ filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))" }}
-              onMouseUp={() => fortuneWheelRef.current?.spin()}
-            />
-          }
-          onSpinStart={() => {
-            setPrizeWinnerKey("");
-          }}
-          onSpinEnd={(prize) => {
-            handleSpinEnd(prize);
-          }}
-          animationDurationInMs={10000}
-        />
+          </div>
+        </div>
       </div>
+      <CustomCursor/>
     </>
   );
 }

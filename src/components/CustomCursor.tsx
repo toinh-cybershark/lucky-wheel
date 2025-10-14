@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+export default function CustomCursor() {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
-    const updateCursorPosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    document.body.style.cursor = 'none';
-    document.addEventListener('mousemove', updateCursorPosition);
+    const move = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
+    document.addEventListener("mousemove", move);
+    document.body.style.cursor = "none";
     return () => {
-      document.body.style.cursor = 'auto';
-      document.removeEventListener('mousemove', updateCursorPosition);
+      document.removeEventListener("mousemove", move);
+      document.body.style.cursor = "auto";
     };
   }, []);
 
   return (
-    <div
-      className="fixed z-[9999] pointer-events-none select-none flex items-center justify-center w-6 h-6 rounded-full bg-yellow-400 text-black text-[10px] font-bold"
+    <img
+      src="/mouse.png"
+      alt="cursor"
+      className="fixed pointer-events-none z-[9999]"
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
-        transform: 'translate(-50%, -50%)',
+        left: `${pos.x}px`,
+        top: `${pos.y}px`,
+        width: "74px", 
+        height: "64px",
+        transform: "translate(-50%, -50%)", // căn giữa
       }}
-    >
-      test
-    </div>
+    />
   );
-};
-
-export default CustomCursor;
+}

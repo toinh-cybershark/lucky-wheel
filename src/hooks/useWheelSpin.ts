@@ -13,7 +13,7 @@ const SPIN_DIRECTION = -1;
 const COLLISION_ANGLE_OFFSET = -20;
 const API_WAIT_SPIN_SPEED = 0.3;
 const DELAY_AFTER_SPIN = 2000;
-const DEFAULT_ENABLE_POINTER_TICK = false;
+const DEFAULT_ENABLE_POINTER_TICK = true;
 export function useWheelSpin(
   prizes: WheelOfFortunePrize[],
   onSpinStart: () => void,

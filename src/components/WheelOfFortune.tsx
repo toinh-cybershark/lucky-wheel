@@ -134,25 +134,13 @@ export const WheelOfFortune = forwardRef<
               />
             ))}
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-blue-500 to-blue-600 p-4 rounded-full">
-          <div className="w-12 h-12">
-            <img src="/9proxy-logo.png" alt="" className="w-full h-full bg-white rounded-2xl" />
+        {wheelSpinButton && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {wheelSpinButton}
           </div>
-        </div>
+        )}
+
       </div>
-      {/* Footer */}
-      <div className="w-52 h-16 flex items-center justify-center -mt-3.5">
-        <img
-          src="/footer-lucky-wheel.png"
-          alt="footer"
-          className="w-full h-full "
-        />
-      </div>
-      {wheelSpinButton && (
-        <div className="flex items-center justify-center w-full h-full mt-5">
-          {wheelSpinButton}
-        </div>
-      )}
     </div>
   );
 });
