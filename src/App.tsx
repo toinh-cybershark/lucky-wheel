@@ -94,13 +94,13 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-center w-full mt-10">
-          <img src="/sad-face.png" alt="Gift 200 IPS" className="w-[39px] h-[39px] object-cover" />
+        <div className="flex flex-col items-center justify-center w-full mt-6">
+          <img src="/sad-face-blue.png" alt="Gift 200 IPS" className="size-14 object-cover" />
 
         </div>
       ),
       key: "sad_face",
-      value: "Sad Face",
+      value: "Good luck",
       probability: 0.5,
       nearMissEffect: {
         targetDirection: 'before',
@@ -171,12 +171,12 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-center w-full mt-10">
-          <img src="/sad-face.png" alt="Gift 200 IPS" className="w-[39px] h-[39px] object-cover" />
+        <div className="flex flex-col items-center justify-center w-full mt-6">
+          <img src="/sad-face-blue.png" alt="Gift 200 IPS" className="size-14 object-cover" />
         </div>
       ),
       key: "try_again",
-      value: "Sad Face",
+      value: "Good luck",
       probability: 0.05,
       nearMissEffect: {
         targetDirection: 'before',
@@ -212,15 +212,15 @@ function App() {
         {showModal && (
           <div
             onClick={handleCloseModal}
-            className={`fixed bg-black/90 z-30 inset-0 flex items-center justify-center cursor-pointer ${animate}`}
+            className={`fixed bg-black/90 z-30 inset-0 flex items-center justify-center cursor-pointer `}
           >
             <div
               // onClick={(e) => e.stopPropagation()}
               className="flex flex-col justify-center items-center gap-3 "
             >
-              <div className="w-[420px] relative">
+              <div className={`w-[420px] relative ${animate}`}>
                 <img src="/gift.png" alt="Gift" className="max-w-md w-full" />
-                <div className="absolute bottom-[100px] text-base font-bold text-white flex items-center p-4 left-1/2 -translate-x-1/2">
+                <div className="absolute bottom-[110px] text-2xl font-bold text-white flex items-center  left-1/2 -translate-x-1/2">
                   {prizeWinnerKey?.value}
                 </div>
               </div>
@@ -258,6 +258,7 @@ function App() {
               }}
               animationDurationInMs={10000}
             />
+           
           </div>
         </div>
       </div>

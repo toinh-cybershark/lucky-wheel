@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { useWheelSpin } from "../hooks/useWheelSpin";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { generateWheelGradient } from "../utils/wheel-gradient";
-
+const BORDERCIRCLESOFFSETANGLE = 21.5;
 export interface WheelOfFortuneRef {
   spin: () => void;
   isSpinning: boolean;
@@ -61,12 +61,12 @@ export const WheelOfFortune = forwardRef<
     wheelRef,
     pointerRef
   );
-
+  const borderCircles = Array.from({ length: 8 });
   useImperativeHandle(ref, () => ({
     isSpinning,
     spin,
   }));
-
+  const isWinnerRevealed = isSpinning
   return (
     <div
       className={twMerge(
@@ -74,11 +74,44 @@ export const WheelOfFortune = forwardRef<
         className
       )}
     >
-      <div className="aspect-square relative w-full overflow-hidden">
+      <div className="aspect-square relative w-full overflow-hidden z-10 ">
+        {borderCircles.length > 0 && (
+          <div className="absolute z-10 top-0 left-0 w-full h-full neon pointer-events-none" style={{
+            transform: `rotate(${rotation}deg)`,
+            transition: skipWheelAnimation
+              ? "none"
+              : `transform ${animationDurationInSeconds}s ${animationTimingFunction}`,
+          }}>
+            {borderCircles.map((_, index) => {
+              const rotationAngle = (360 / borderCircles.length) * index + BORDERCIRCLESOFFSETANGLE;
+              const animationClass = isWinnerRevealed
+                ? "animate-blink-all"
+                : index % 2 === 0
+                  ? "animate-blink-even-odd"
+                  : "animate-blink-even-even "
+                ;
+              return (
+                <div
+                  key={`border-circle-${index}`}
+                  className="absolute top-0 left-0 w-full h-full"
+                  style={{ transform: `rotate(${rotationAngle}deg)` }}
+                >
+                  <div
+                    className={twMerge(
+                      "absolute top-1.5 left-1/2 -translate-x-1/2 size-3 bg-white rounded-full shadow-lg neon-dot",
+                      animationClass
+                    )}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
         {wheelPointer && (
           <div
             ref={pointerRef}
             className="absolute z-20 top-[12px] left-[50%] translate-x-[-50%] "
+            draggable={false}
           >
             {wheelPointer}
           </div>
@@ -135,11 +168,17 @@ export const WheelOfFortune = forwardRef<
             ))}
         </div>
         {wheelSpinButton && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className={twMerge("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isSpinning && 'pointer-events-none saturate-20')}>
             {wheelSpinButton}
           </div>
         )}
 
+      </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+200px)] h-[calc(100%+200px)] z-0 overflow-visible pointer-events-none ">
+        <img
+          src="/sun-light.png"
+          className="w-full h-full object-contain animate-spin-reverse origin-center"
+        />
       </div>
     </div>
   );
