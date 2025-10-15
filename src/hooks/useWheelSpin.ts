@@ -22,10 +22,11 @@ export function useWheelSpin(
   wheelRotationsCount: number,
   wheelRef: RefObject<HTMLDivElement | null>,
   pointerRef: RefObject<HTMLDivElement | null>,
- 
+
 ) {
   const [, startTransition] = useTransition();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [rotation, setRotation] = useState<number>(0);
   const [skipWheelAnimation, setSkipWheelAnimation] = useState<boolean>(false);
   const [animationTimingFunction, setAnimationTimingFunction] =
@@ -86,6 +87,7 @@ export function useWheelSpin(
     const startFullSpinProcess = async () => {
       if (!isSpinning) return;
       onSpinStart();
+      setIsCompleted(false);
       spinStartTimeRef.current = Date.now();
       lastPassedPegIndex.current = -1;
       totalRotationRef.current = 0;
@@ -145,6 +147,7 @@ export function useWheelSpin(
         setIsSpinning(false);
         if (winnerRef.current) {
           onSpinEnd(winnerRef.current);
+          setIsCompleted(true);
         }
       }, remainingTime + DELAY_AFTER_SPIN);
     };
@@ -166,7 +169,7 @@ export function useWheelSpin(
         }
       }
     }
-  }, [isSpinning, pointerRef, DEFAULT_ENABLE_POINTER_TICK]); 
+  }, [isSpinning, pointerRef, DEFAULT_ENABLE_POINTER_TICK]);
 
   const spin = () => {
     if (isSpinning) return;
@@ -181,6 +184,7 @@ export function useWheelSpin(
     }, 50);
   };
   return {
+    isCompleted,
     isSpinning,
     rotation,
     skipWheelAnimation,

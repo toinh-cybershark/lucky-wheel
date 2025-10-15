@@ -1,9 +1,8 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useWheelSpin } from "../hooks/useWheelSpin";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { generateWheelGradient } from "../utils/wheel-gradient";
-const BORDERCIRCLESOFFSETANGLE = 21.5;
 export interface WheelOfFortuneRef {
   spin: () => void;
   isSpinning: boolean;
@@ -23,7 +22,8 @@ export type WheelOfFortuneProps = {
   wheelRotationsCount?: number;
   className?: string;
 };
-
+const CHASING_ANIMATION_SPEED_MS = 1300;
+const BORDERCIRCLESOFFSETANGLE = 21.5;
 export const WheelOfFortune = forwardRef<
   WheelOfFortuneRef,
   WheelOfFortuneProps
@@ -39,7 +39,9 @@ export const WheelOfFortune = forwardRef<
     wheelRotationsCount = 5,
     className,
   } = props;
+  const [activeDotIndex, setActiveDotIndex] = useState<number | null>(null);
   const [showDebugLines] = useState(false); // test debug line when development
+  const rotatingDivRef = useRef<HTMLDivElement>(null);
   const wheelRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLDivElement>(null);
   const wheelSegmentDegrees =
@@ -47,6 +49,7 @@ export const WheelOfFortune = forwardRef<
   const animationDurationInSeconds = Math.round(animationDurationInMs / 1000);
   const wheelGradient = generateWheelGradient(prizes, wheelSegmentDegrees);
   const {
+    isCompleted,
     isSpinning,
     rotation,
     skipWheelAnimation,
@@ -58,15 +61,38 @@ export const WheelOfFortune = forwardRef<
     onSpinEnd,
     animationDurationInMs,
     wheelRotationsCount,
-    wheelRef,
+    rotatingDivRef,
     pointerRef
   );
   const borderCircles = Array.from({ length: 8 });
+  useEffect(() => {
+    let intervalId: number | undefined;
+
+    if (isSpinning) {
+      const speedPerDot = CHASING_ANIMATION_SPEED_MS / borderCircles.length;
+      intervalId = setInterval(() => {
+        setActiveDotIndex(prevIndex => {
+          if (prevIndex === null || prevIndex <= 0) {
+            return borderCircles.length - 1;
+          }
+          return prevIndex - 1;
+        });
+
+      }, speedPerDot);
+
+    } else {
+      setActiveDotIndex(null);
+    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isSpinning, borderCircles.length, CHASING_ANIMATION_SPEED_MS]);
   useImperativeHandle(ref, () => ({
     isSpinning,
     spin,
   }));
-  const isWinnerRevealed = isSpinning
   return (
     <div
       className={twMerge(
@@ -76,20 +102,10 @@ export const WheelOfFortune = forwardRef<
     >
       <div className="aspect-square relative w-full overflow-hidden z-10 ">
         {borderCircles.length > 0 && (
-          <div className="absolute z-10 top-0 left-0 w-full h-full neon pointer-events-none" style={{
-            transform: `rotate(${rotation}deg)`,
-            transition: skipWheelAnimation
-              ? "none"
-              : `transform ${animationDurationInSeconds}s ${animationTimingFunction}`,
-          }}>
+          <div className="absolute z-10 top-0 left-0 w-full h-full neon pointer-events-none" >
             {borderCircles.map((_, index) => {
               const rotationAngle = (360 / borderCircles.length) * index + BORDERCIRCLESOFFSETANGLE;
-              const animationClass = isWinnerRevealed
-                ? "animate-blink-all"
-                : index % 2 === 0
-                  ? "animate-blink-even-odd"
-                  : "animate-blink-even-even "
-                ;
+              const isActive = index === activeDotIndex;
               return (
                 <div
                   key={`border-circle-${index}`}
@@ -98,8 +114,9 @@ export const WheelOfFortune = forwardRef<
                 >
                   <div
                     className={twMerge(
-                      "absolute top-1.5 left-1/2 -translate-x-1/2 size-3 bg-white rounded-full shadow-lg neon-dot",
-                      animationClass
+                      "absolute top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full shadow-lg neon-dot",
+                      isActive && "dot-active",
+                      (!isSpinning && isCompleted) && "animate-blink-all"
                     )}
                   />
                 </div>
@@ -110,7 +127,7 @@ export const WheelOfFortune = forwardRef<
         {wheelPointer && (
           <div
             ref={pointerRef}
-            className="absolute z-20 top-[12px] left-[50%] translate-x-[-50%] "
+            className="absolute z-20 top-1.5 left-[50%] translate-x-[-50%] "
             draggable={false}
           >
             {wheelPointer}
@@ -118,54 +135,62 @@ export const WheelOfFortune = forwardRef<
         )}
         <div
           ref={wheelRef}
-          className={`absolute top-0 left-0 w-full h-full overflow-hidden rounded-[50%] `}
+          className={`absolute top-0 left-0 w-full h-full overflow-hidden rounded-[50%] flex justify-center items-center`}
           style={{
             boxShadow:
               "box-shadow: 0 0 20px rgba(0, 0, 0, 0.25), inset 0 0 10px rgba(0, 0, 0, 0.3)",
             borderColor: wheelBorderColor,
             background: wheelGradient,
-            transform: `rotate(${rotation}deg)`,
-            transition: skipWheelAnimation
-              ? "none"
-              : `transform ${animationDurationInSeconds}s ${animationTimingFunction}`,
             backgroundImage: "url('/background-lucky-wheel.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
+
           }}
         >
-          {prizes.map((item, index) => (
-            <div
-              key={item.key}
-              className="absolute top-0 left-0 flex justify-center w-full h-full text-center origin-center"
-              style={{
-                transform: `rotate(${wheelSegmentDegrees * index + wheelSegmentDegrees / 2
-                  }deg)`,
-              }}
-            >
+          <div ref={rotatingDivRef}
+            className="size-[76%] lucky-wheel" style={{
+              backgroundImage: "url('/background-spin.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transform: `rotate(${rotation}deg)`,
+              transition: skipWheelAnimation
+                ? "none"
+                : `transform ${animationDurationInSeconds}s ${animationTimingFunction}`,
+            }}>
+            {prizes.map((item, index) => (
               <div
+                key={item.key}
+                className="absolute top-0 left-0 flex justify-center w-full h-full text-center origin-center"
                 style={{
-                  rotate:
-                    item.displayOrientation === "horizontal"
-                      ? "270deg"
-                      : "0deg",
-                  top: item.displayOrientation === "horizontal" ? "15%" : "10%",
+                  transform: `rotate(${wheelSegmentDegrees * index + wheelSegmentDegrees / 2
+                    }deg)`,
                 }}
-                className="text-ellipsis absolute overflow-hidden"
               >
-                {item.prize}
+                <div
+                  style={{
+                    rotate:
+                      item.displayOrientation === "horizontal"
+                        ? "270deg"
+                        : "0deg",
+                    top: item.displayOrientation === "horizontal" ? "15%" : "4%",
+                  }}
+                  className="text-ellipsis absolute overflow-hidden"
+                >
+                  {item.prize}
+                </div>
               </div>
-            </div>
-          ))}
-          {showDebugLines &&
-            prizes.map((_, index) => (
-              <div
-                key={`debug-line-${index}`}
-                className="absolute top-0 left-1/2 -translate-x-1/2 h-1/2 w-0.5 bg-red-500 origin-bottom"
-                style={{
-                  transform: `rotate(${wheelSegmentDegrees * index}deg)`,
-                }}
-              />
             ))}
+            {showDebugLines &&
+              prizes.map((_, index) => (
+                <div
+                  key={`debug-line-${index}`}
+                  className="absolute top-0 left-1/2 -translate-x-1/2 h-1/2 w-0.5 bg-red-500 origin-bottom"
+                  style={{
+                    transform: `rotate(${wheelSegmentDegrees * index}deg)`,
+                  }}
+                />
+              ))}
+          </div>
         </div>
         {wheelSpinButton && (
           <div className={twMerge("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isSpinning && 'pointer-events-none saturate-20')}>

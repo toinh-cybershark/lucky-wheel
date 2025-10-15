@@ -1,4 +1,26 @@
 @import "tailwindcss";
+::-webkit-scrollbar {
+  width: 2px; /* Adjust width for vertical scrollbar */
+  height: 2px; /* Adjust height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #686868;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.lucky-wheel div img + div p {
+  text-transform: uppercase;
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff,
+    -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
 
 .wheel-spinning-loading {
   animation: spin-infinite 1s linear infinite;
@@ -80,19 +102,28 @@
 }
 
 .neon-dot {
-  box-shadow:
-    0 0 5px #0ff,
-    0 0 10px #0ff,
-    0 0 20px #0ff,
-    0 0 40px #0ff;
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 0.7;
+  transform: scale(0.9);
+  transition: all 0.2s ease-in-out;
+  box-shadow: none;
+}
+
+.dot-active {
+  opacity: 1;
+  transform: scale(1.15);
+  background: #fff;
+  box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
 }
 
 /* Keyframes cho nhấp nháy */
 @keyframes blink-even-odd {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.2;
     transform: scale(0.8);
@@ -100,13 +131,16 @@
 }
 
 @keyframes blink-all {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f09;
-  }
-  50% {
+  0%,
+  100% {
     opacity: 0.5;
-    box-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #f09;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ff;
+  }
+
+  50% {
+    opacity: 1;
+    background: #fff;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
   }
 }
 
@@ -119,8 +153,9 @@
 }
 
 .animate-blink-all {
-  animation: blink-all 0.5s infinite;
+  animation: blink-all 1s infinite;
 }
+
 @keyframes spin-reverse {
   to {
     transform: rotate(-360deg);
@@ -128,5 +163,25 @@
 }
 
 .animate-spin-reverse {
-  animation: spin-reverse 12s linear infinite;
+  animation: spin-reverse 16s linear infinite;
+}
+
+@keyframes chase-blink {
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    background: #fff;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+    box-shadow: none;
+  }
+}
+
+.animate-chase-blink {
+  animation: chase-blink 1.2s infinite;
 }
