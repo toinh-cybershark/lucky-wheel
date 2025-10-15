@@ -1,4 +1,27 @@
 @import "tailwindcss";
+::-webkit-scrollbar {
+  width: 2px; /* Adjust width for vertical scrollbar */
+  height: 2px; /* Adjust height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #686868;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.lucky-wheel div img + div p {
+  text-transform: uppercase;
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff,
+    -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
+
 .wheel-spinning-loading {
   animation: spin-infinite 1s linear infinite;
 }
@@ -7,57 +30,158 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 @keyframes spin-infinite {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 /*  animation  kim bật nảy */
 @keyframes pointer-wiggle {
   0% {
     transform: rotate(0deg);
   }
+
   50% {
-    transform: rotate(-25deg); /* bị  gờ đẩy lùi */
+    transform: rotate(-25deg);
+    /* bị  gờ đẩy lùi */
   }
+
   100% {
-    transform: rotate(2deg); /* bật  về phía trước rồi trở lại */
+    transform: rotate(2deg);
+    /* bật  về phía trước rồi trở lại */
   }
 }
+
 @keyframes fade-in-up {
   0% {
     opacity: 0;
-    transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0) scale(0);
   }
+
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
+
 @keyframes fade-out-up {
   0% {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     opacity: 0;
     transform: translate3d(0, -100%, 0);
   }
 }
+
 .fade-in-up {
-  animation: fade-in-up 0.4s ease-out forwards;
+  animation: fade-in-up 0.6s ease-out forwards;
 }
+
 .fade-out-up {
   animation: fade-out-up 0.4s ease-in forwards;
 }
+
 .pointer-tick-animation {
-  transform-origin: 50% 20%; /* Đặt tâm xoay gần đỉnh của kim */
+  transform-origin: 50% 20%;
+  /* Đặt tâm xoay gần đỉnh của kim */
   animation: pointer-wiggle 0.1s ease-out;
+}
+
+.neon-dot {
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 0.7;
+  transform: scale(0.9);
+  transition: all 0.2s ease-in-out;
+  box-shadow: none;
+}
+
+.dot-active {
+  opacity: 1;
+  transform: scale(1.15);
+  background: #fff;
+  box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+}
+
+/* Keyframes cho nhấp nháy */
+@keyframes blink-even-odd {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes blink-all {
+  0%,
+  100% {
+    opacity: 0.5;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0ff;
+  }
+
+  50% {
+    opacity: 1;
+    background: #fff;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  }
+}
+
+.animate-blink-even-odd {
+  animation: blink-even-odd 1s infinite linear;
+}
+
+.animate-blink-even-even {
+  animation: blink-even-odd 1s infinite linear 0.5s;
+}
+
+.animate-blink-all {
+  animation: blink-all 1s infinite;
+}
+
+@keyframes spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 16s linear infinite;
+}
+
+@keyframes chase-blink {
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    background: #fff;
+    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+    box-shadow: none;
+  }
+}
+
+.animate-chase-blink {
+  animation: chase-blink 1.2s infinite;
 }
