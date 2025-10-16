@@ -15,7 +15,7 @@ function SpinButton({ disabled, ...props }: SpinButtonProps) {
       style={{
         cursor: "inherit",
       }}
-      className=""
+      className="mt-1.5"
     >
       <img
         src={disabled ? "/spin-disabled.png" : "/spin.png"}
@@ -55,7 +55,7 @@ function App() {
       probability: 0.08,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -79,7 +79,7 @@ function App() {
       probability: 0.08,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -103,14 +103,14 @@ function App() {
       probability: 0.1,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-center w-full mt-3">
+        <div className="flex flex-col items-center justify-center w-full ">
           <img
             src="/sad-face-blue.png"
             alt="Gift 200 IPS"
@@ -127,7 +127,7 @@ function App() {
       probability: 0.5,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -151,7 +151,7 @@ function App() {
       probability: 0.05,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -175,7 +175,7 @@ function App() {
       probability: 0.04,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -199,7 +199,7 @@ function App() {
       probability: 0.1,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -223,7 +223,7 @@ function App() {
       probability: 0.05,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.05,
+        proximity: 0.2,
         chance: 1,
       },
     },
@@ -302,7 +302,7 @@ function App() {
             }}
             className="w-full h-[860px] relative "
           >
-            <div className="absolute  left-1/2 bottom-[210px] -translate-x-1/2">
+            <div className="absolute  left-1/2 bottom-[235px] -translate-x-1/2">
               <img
                 src="/label.png"
                 alt="Background"
