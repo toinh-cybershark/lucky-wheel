@@ -10,7 +10,7 @@ import { getPrizeWinner } from "../utils/get-prize-winner";
 import { getRotationFromMatrix } from "../utils/get-rotation-from-matrix";
 
 const SPIN_DIRECTION = -1;
-const COLLISION_ANGLE_OFFSET = -20;
+const COLLISION_ANGLE_OFFSET = -10;
 const API_WAIT_SPIN_SPEED = 0.3;
 const DELAY_AFTER_SPIN = 2000;
 const DEFAULT_ENABLE_POINTER_TICK = true;
@@ -37,8 +37,13 @@ export function useWheelSpin(
   const animationFrameId = useRef<number>(0);
   const totalRotationRef = useRef<number>(0);
   const previousAngleRef = useRef<number>(0);
-  const lastPassedPegIndex = useRef<number>(-1);
-  const pegAngle = prizes.length > 0 ? 360 / prizes.length : 0;
+  
+  // -- THAY ĐỔI #1: Đổi tên biến để dễ hiểu hơn --
+  const lastPassedCollisionIndex = useRef<number>(-1);
+  
+  // -- THAY ĐỔI #2: Tính toán góc giữa các điểm va chạm (gấp đôi số điểm) --
+  // Giờ đây mỗi ô sẽ có 2 điểm va chạm: 1 ở cạnh, 1 ở giữa
+  const collisionPointAngle = prizes.length > 0 ? 360 / (prizes.length * 2) : 0;
 
   useEffect(() => {
     tickAudioRef.current = new Audio("/tick.mp3");
@@ -59,13 +64,14 @@ export function useWheelSpin(
     totalRotationRef.current += deltaAngle;
     previousAngleRef.current = currentAngle;
 
+    // -- THAY ĐỔI #3: Cập nhật toàn bộ logic va chạm để sử dụng giá trị mới --
     const offsetRotation =
       Math.abs(totalRotationRef.current) +
-      pegAngle / 2 +
+      collisionPointAngle / 2 + // Sử dụng góc va chạm mới
       COLLISION_ANGLE_OFFSET;
-    const currentPegIndex = Math.floor(offsetRotation / pegAngle);
+    const currentCollisionIndex = Math.floor(offsetRotation / collisionPointAngle); // Sử dụng góc va chạm mới
 
-    if (currentPegIndex > lastPassedPegIndex.current) {
+    if (currentCollisionIndex > lastPassedCollisionIndex.current) {
       if (DEFAULT_ENABLE_POINTER_TICK) {
         if (tickAudioRef.current) {
           const sound = tickAudioRef.current.cloneNode() as HTMLAudioElement;
@@ -78,7 +84,7 @@ export function useWheelSpin(
           pRef.classList.add("pointer-tick-animation");
         }
       }
-      lastPassedPegIndex.current = currentPegIndex;
+      lastPassedCollisionIndex.current = currentCollisionIndex;
     }
     animationFrameId.current = requestAnimationFrame(collisionCheckLoop);
   };
@@ -89,7 +95,9 @@ export function useWheelSpin(
       onSpinStart();
       setIsCompleted(false);
       spinStartTimeRef.current = Date.now();
-      lastPassedPegIndex.current = -1;
+      
+      lastPassedCollisionIndex.current = -1;
+      
       totalRotationRef.current = 0;
       previousAngleRef.current = getRotationFromMatrix(wheelRef.current!);
       animationFrameId.current = requestAnimationFrame(collisionCheckLoop);

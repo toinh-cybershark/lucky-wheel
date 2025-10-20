@@ -7,6 +7,7 @@ import {
   type WheelOfFortuneRef,
 } from "./components/WheelOfFortune";
 import type { WheelOfFortunePrize } from "./types/wheel-of-fortune-prize";
+import SparkleStars from "./components/SparkleStars";
 type SpinButtonProps = React.ComponentProps<"button">;
 function SpinButton({ disabled, ...props }: SpinButtonProps) {
   return (
@@ -249,6 +250,7 @@ function App() {
   };
   return (
     <>
+
       <div
         style={{
           backgroundImage: "url('/background.png')",
@@ -257,6 +259,7 @@ function App() {
         }}
         className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 "
       >
+        
         {showModal && (
           <div
             onClick={handleCloseModal}
@@ -303,11 +306,13 @@ function App() {
             className="w-full h-[860px] relative "
           >
             <div className="absolute  left-1/2 bottom-[235px] -translate-x-1/2">
+            <SparkleStars>
               <img
                 src="/label.png"
                 alt="Background"
                 className="w-full -mb-6 h-full object-cover max-w-[400px] max-h-[184px]"
               />
+              </SparkleStars>
               <WheelOfFortune
                 className="max-w-[420px]"
                 ref={fortuneWheelRef}
