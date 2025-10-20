@@ -5,8 +5,8 @@ type Props = {
 };
 const WheelDots = (props: Props) => {
   const { prizeLength, wheelSegmentDegrees } = props;
-  const DOT_DISTANCE_FROM_CENTER = "-2px";
-  const DOT_OFFSET_FROM_EDGE_DEG = 0;
+  const DOT_DISTANCE_FROM_CENTER = "4.5px";
+  const DOT_OFFSET_FROM_EDGE_DEG = -1.5;
   return Array.from({ length: prizeLength }).map((_, index) => {
     const leftDotAngle = wheelSegmentDegrees * index + DOT_OFFSET_FROM_EDGE_DEG;
     return (

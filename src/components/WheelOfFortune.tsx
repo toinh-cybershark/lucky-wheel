@@ -153,7 +153,7 @@ export const WheelOfFortune = forwardRef<
         >
           <div
             ref={rotatingDivRef}
-            className="size-[76%] lucky-wheel"
+            className="size-[79%] lucky-wheel"
             style={{
               backgroundImage: "url('/background-spin.png')",
               backgroundSize: "cover",
@@ -181,7 +181,7 @@ export const WheelOfFortune = forwardRef<
                         ? "270deg"
                         : "0deg",
                     top:
-                      item.displayOrientation === "horizontal" ? "15%" : "3.5%",
+                      item.displayOrientation === "horizontal" ? "15%" : "6.5%",
                   }}
                   className="text-ellipsis absolute overflow-hidden"
                 >

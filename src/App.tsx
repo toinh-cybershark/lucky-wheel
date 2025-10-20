@@ -41,11 +41,35 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
           <img
-            src="/gift-200ips.png"
+            src="/extra100.png"
             alt="Gift 200 IPS"
-            className="w-[39px] h-[44px] "
+            className="w-[33px] h-[36px] "
+          />
+          <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
+            <p className="">EXTRA </p>
+            <p>100%</p>
+          </div>
+        </div>
+      ),
+      key: "extra100",
+      value: "Extra 100%",
+      probability: 0.02,
+      nearMissEffect: {
+        targetDirection: "before",
+        proximity: 0.1,
+        chance: 0.7,
+      },
+    },
+    {
+      color: "#feeef6",
+      prize: (
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
+          <img
+            src="/200ips.png"
+            alt="Gift 200 IPS"
+            className="w-[31px] h-[36px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
             <p className="">Free </p>
@@ -58,76 +82,28 @@ function App() {
       probability: 0.2,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.1,
-        chance: 0.5,
+        proximity: 0.35,
+        chance: 0.6,
       },
     },
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
+        <div className="flex flex-col-reverse items-center justify-center w-full gap-[5px]">
           <img
-            src="/cloud-computing.png"
+            src="/20gbs.png"
             alt="Gift 200 IPS"
-            className="w-[48px] h-[34px] object-cover"
+            className="w-[38px] h-[27px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#FF7B00]">
-            <p className="">Free </p>
+            <p className="">Free</p>
             <p>20 GBs</p>
           </div>
         </div>
       ),
       key: "free_20_gbs",
       value: "Free 20 GBs",
-      probability: 0.3,
-      nearMissEffect: {
-        targetDirection: "before",
-        proximity: 0.35,
-        chance: 0.6,
-      },
-    },
-    {
-      color: "#fc9ebe",
-      prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
-          <img
-            src="/coupon30.png"
-            alt="Gift 200 IPS"
-            className="w-[40px] h-[37px] object-cover"
-          />
-          <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
-            <p className="">Sale </p>
-            <p>30% OFF</p>
-          </div>
-        </div>
-      ),
-      key: "sale_30_off",
-      value: "Sale 30% OFF",
-      probability: 0.1,
-      nearMissEffect: {
-        targetDirection: "before",
-        proximity: 0.2,
-        chance: 0.5,
-      },
-    },
-    {
-      color: "#feeef6",
-      prize: (
-        <div className="flex flex-col items-center justify-center w-full ">
-          <img
-            src="/sad-face-blue.png"
-            alt="Gift 200 IPS"
-            className="size-10 object-cover"
-          />
-          <div className="font-bold  text-wrap text-xs text-[#FF7B00]">
-            <p className="">Good</p>
-            <p>luck</p>
-          </div>
-        </div>
-      ),
-      key: "sad_face",
-      value: "Good luck",
-      probability: 0,
+      probability: 0.2,
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
@@ -137,15 +113,63 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
+          <img
+            src="/coupon20.png"
+            alt="Gift 200 IPS"
+            className="w-[38px] h-[27px] object-cover"
+          />
+          <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
+            <p className="">Sale </p>
+            <p>20% OFF</p>
+          </div>
+        </div>
+      ),
+      key: "sale_20_off",
+      value: "Sale 20% OFF",
+      probability: 0.12,
+      nearMissEffect: {
+        targetDirection: "before",
+        proximity: 0.2,
+        chance: 0.5,
+      },
+    },
+    {
+      color: "#feeef6",
+      prize: (
+        <div className="flex flex-col-reverse items-center justify-center w-full gap-[5px]">
+          <img
+            src="/1000ips.png"
+            alt="Gift 200 IPS"
+            className="w-[31px] h-[36px] object-cover"
+          />
+          <div className="font-bold  text-wrap text-xs text-[#FF7B00]">
+            <p className="">Free</p>
+            <p>1000 IPs</p>
+          </div>
+        </div>
+      ),
+      key: "free1000i_ps",
+      value: "Free 1000 IPs",
+      probability: 0.1,
+      nearMissEffect: {
+        targetDirection: "before",
+        proximity: 0.2,
+        chance: 1,
+      },
+    },
+    {
+      color: "#fc9ebe",
+      prize: (
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
           <img
             src="/coupon25.png"
             alt="Gift 200 IPS"
             className="w-[40px] h-[40px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
-            <p className="">ExTRA</p>
-            <p> 25%</p>
+            <p className="">Add 25% </p>
+            <p> IP or GB</p>
           </div>
         </div>
       ),
@@ -161,7 +185,7 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
           <img
             src="/coupon50.png"
             alt="Gift 200 IPS"
@@ -173,9 +197,9 @@ function App() {
           </div>
         </div>
       ),
-      key: "add_50_ip_or_gb",
-      value: "Add 50% IP or GB",
-      probability: 0.05,
+      key: "extra_50",
+      value: "EXtra 50%",
+      probability: 0.03,
       nearMissEffect: {
         targetDirection: "after",
         proximity: 0.1,
@@ -185,21 +209,21 @@ function App() {
     {
       color: "#fc9ebe",
       prize: (
-        <div className="flex flex-col items-center justify-end w-full gap-[5px] ">
+        <div className="flex flex-col-reverse items-center justify-end w-full gap-[5px] ">
           <img
-            src="/coupon20.png"
+            src="/100gbs.png"
             alt="Gift 200 IPS"
-            className="w-[40px] h-[37px] object-cover"
+            className="w-[38px] h-[27px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
-            <p className="">Sale</p>
-            <p>20% OFF</p>
+            <p className="">Free</p>
+            <p>100 GBs</p>
           </div>
         </div>
       ),
-      key: "sale_20_off",
-      value: "Sale 20% OFF",
-      probability: 0.2,
+      key: "free_100_gbs",
+      value: "Free 100 GBs",
+      probability: 0.1,
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
@@ -209,24 +233,24 @@ function App() {
     {
       color: "#feeef6",
       prize: (
-        <div className="flex flex-col items-center justify-center w-full ">
+        <div className="flex flex-col-reverse items-center justify-center w-full gap-[5px]">
           <img
-            src="/sad-face-blue.png"
+            src="/coupon30.png"
             alt="Gift 200 IPS"
-            className="size-10 object-cover"
+            className="w-[31px] h-[29px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#FF7B00]">
-            <p className="">Good</p>
-            <p>luck</p>
+            <p className="">Sale</p>
+            <p>30% OFF</p>
           </div>
         </div>
       ),
-      key: "try_again",
-      value: "Good luck",
-      probability: 0,
+      key: "sale_30_off",
+      value: "Sale 30% OFF",
+      probability: 0.08,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.2,
+        proximity: 0.8,
         chance: 0.1,
       },
     },
