@@ -15,12 +15,15 @@ function SpinButton({ disabled, ...props }: SpinButtonProps) {
       style={{
         cursor: "inherit",
       }}
-      className="mt-1.5"
+      className=""
     >
       <img
         src={disabled ? "/spin-disabled.png" : "/spin.png"}
         alt="Spin Button"
-        className="size-[96px] rounded-full"
+        className="size-[96px] rounded-full "
+        style={{
+          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        }}
       />
     </button>
   );
@@ -52,11 +55,11 @@ function App() {
       ),
       key: "free_200_ips",
       value: "Free 200 IPs",
-      probability: 0.08,
+      probability: 0.2,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.2,
-        chance: 1,
+        proximity: 0.1,
+        chance: 0.5,
       },
     },
     {
@@ -76,11 +79,11 @@ function App() {
       ),
       key: "free_20_gbs",
       value: "Free 20 GBs",
-      probability: 0.08,
+      probability: 0.3,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.2,
-        chance: 1,
+        proximity: 0.35,
+        chance: 0.6,
       },
     },
     {
@@ -104,7 +107,7 @@ function App() {
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
-        chance: 1,
+        chance: 0.5,
       },
     },
     {
@@ -124,7 +127,7 @@ function App() {
       ),
       key: "sad_face",
       value: "Good luck",
-      probability: 0.5,
+      probability: 0,
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
@@ -148,11 +151,11 @@ function App() {
       ),
       key: "add_25_ip_or_gb",
       value: "Add 25% IP or GB",
-      probability: 0.05,
+      probability: 0.15,
       nearMissEffect: {
         targetDirection: "before",
-        proximity: 0.2,
-        chance: 1,
+        proximity: 0.5,
+        chance: 0.8,
       },
     },
     {
@@ -172,11 +175,11 @@ function App() {
       ),
       key: "add_50_ip_or_gb",
       value: "Add 50% IP or GB",
-      probability: 0.04,
+      probability: 0.05,
       nearMissEffect: {
-        targetDirection: "before",
-        proximity: 0.2,
-        chance: 1,
+        targetDirection: "after",
+        proximity: 0.1,
+        chance: 0.8,
       },
     },
     {
@@ -196,11 +199,11 @@ function App() {
       ),
       key: "sale_20_off",
       value: "Sale 20% OFF",
-      probability: 0.1,
+      probability: 0.2,
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
-        chance: 1,
+        chance: 0.75,
       },
     },
     {
@@ -220,14 +223,18 @@ function App() {
       ),
       key: "try_again",
       value: "Good luck",
-      probability: 0.05,
+      probability: 0,
       nearMissEffect: {
         targetDirection: "before",
         proximity: 0.2,
-        chance: 1,
+        chance: 0.1,
       },
     },
   ];
+  const total = wheelPrizes.reduce((prev, cur) => {
+    return (prev += Number(cur.probability));
+  }, 0);
+  console.log("🚀 ~ App ~ total:", total);
   const [showModal, setShowModal] = useState(false);
   const [animate, setAnimate] = useState("fade-in-up");
   const fortuneWheelRef = useRef<WheelOfFortuneRef>(null);
@@ -288,64 +295,67 @@ function App() {
             <Confetti recycle={false} numberOfPieces={1500} />
           </div>
         )}
-        <div
-          className="w-[1200px] h-[860px] min-h-0 overflow-y-auto rounded-[16px]"
-          style={{
-            backgroundColor: "#030736",
-          }}
-        >
+        <CustomCursor>
           <div
+            className="w-[1200px] h-[860px] min-h-0 overflow-y-auto rounded-[16px] select-none"
             style={{
-              backgroundImage: "url('/background-container.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              backgroundColor: "#030736",
+              cursor: "url('/mouse.png') 37 32, auto",
             }}
-            className="w-full h-[860px] relative "
           >
-            <div className="absolute  left-1/2 bottom-[235px] -translate-x-1/2">
-              <img
-                src="/label.png"
-                alt="Background"
-                className="w-full -mb-6 h-full object-cover max-w-[400px] max-h-[184px]"
-              />
-              <WheelOfFortune
-                className="max-w-[420px]"
-                ref={fortuneWheelRef}
-                prizes={wheelPrizes}
-                wheelPointer={
-                  <PointerIcon
-                    style={{
-                      filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
-                    }}
-                    className="w-[44px] h-[62px] text-white object-cover"
-                  />
-                }
-                wheelSpinButton={
-                  <SpinButton
-                    style={{
-                      filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
-                    }}
-                    onMouseUp={() => fortuneWheelRef.current?.spin()}
-                    disabled={fortuneWheelRef.current?.isSpinning}
-                  />
-                }
-                onSpinStart={() => {
-                  setPrizeWinnerKey(null);
-                }}
-                onSpinEnd={(prize) => {
-                  handleSpinEnd(prize);
-                }}
-                animationDurationInMs={10000}
-              />
+            <div
+              style={{
+                backgroundImage: "url('/background-container.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+              className="w-full h-[860px] relative "
+            >
+              <div className="absolute  left-1/2 bottom-[235px] -translate-x-1/2">
+                <img
+                  src="/label.png"
+                  alt="Background"
+                  className="w-full -mb-5 ml-2.5 h-full object-cover max-w-[400px] max-h-[184px]"
+                />
+                <WheelOfFortune
+                  className="max-w-[420px] lg:w-[420px]"
+                  ref={fortuneWheelRef}
+                  prizes={wheelPrizes}
+                  wheelPointer={
+                    <PointerIcon
+                      style={{
+                        filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
+                      }}
+                      className="w-[44px] h-[62px] text-white object-cover"
+                    />
+                  }
+                  wheelSpinButton={
+                    <SpinButton
+                      style={{
+                        filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
+                      }}
+                      onMouseUp={() => fortuneWheelRef.current?.spin()}
+                      disabled={fortuneWheelRef.current?.isSpinning}
+                    />
+                  }
+                  onSpinStart={() => {
+                    setPrizeWinnerKey(null);
+                  }}
+                  onSpinEnd={(prize) => {
+                    handleSpinEnd(prize);
+                  }}
+                  animationDurationInMs={10000}
+                />
+              </div>
+            </div>
+
+            {/* Desc */}
+            <div className="max-w-[1000px] w-full mx-auto">
+              <ReferralRewardsProgram />
             </div>
           </div>
-          {/* Desc */}
-          <div className="max-w-[1000px] w-full mx-auto">
-            <ReferralRewardsProgram />
-          </div>
-        </div>
+        </CustomCursor>
       </div>
-      <CustomCursor />
     </>
   );
 }

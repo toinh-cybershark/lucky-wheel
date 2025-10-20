@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import RequirementsNote from "./RequirementsNote";
 
 export default function ReferralRewardsProgram() {
   const rewards = [
@@ -13,7 +14,7 @@ export default function ReferralRewardsProgram() {
       ),
       title: "GOOD LUCK",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "No prize this time but hey, you found 9Proxy! That's real luck!",
     },
     {
       id: 2,
@@ -25,7 +26,8 @@ export default function ReferralRewardsProgram() {
         />
       ),
       title: "FREE 200IPs",
-      description: "Lorem Ipsum is simply dummy text of the printing and.",
+      description:
+        "Get 200 free residential IPs to power your browsing and online activities",
     },
     {
       id: 3,
@@ -38,7 +40,7 @@ export default function ReferralRewardsProgram() {
       ),
       title: "FREE 20GBS",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Get 20 GBs of free proxy traffic for browsing, streaming, and exploring",
     },
     {
       id: 4,
@@ -50,7 +52,8 @@ export default function ReferralRewardsProgram() {
         />
       ),
       title: "SALE 30% OFF",
-      description: "Lorem Ipsum is simply dummy text of the printing and.",
+      description:
+        "Save 30% off your entire order with this exclusive Black Friday deal",
     },
     {
       id: 5,
@@ -62,8 +65,7 @@ export default function ReferralRewardsProgram() {
         />
       ),
       title: "EXTRA 25%",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      description: "Get 25% more IPs or GBs as bonus on any package purchase",
     },
     {
       id: 6,
@@ -76,7 +78,7 @@ export default function ReferralRewardsProgram() {
       ),
       title: "EXTRA 50%",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "Jackpot! Get 50% more IPs or GBs as bonus on any package purchase",
     },
     {
       id: 7,
@@ -88,7 +90,8 @@ export default function ReferralRewardsProgram() {
         />
       ),
       title: "SALE 20% OFF",
-      description: "Lorem Ipsum is simply dummy text of the printing.",
+      description:
+        "Save 20% on your purchase, discount applied automatically at checkout",
     },
   ];
 
@@ -114,11 +117,12 @@ export default function ReferralRewardsProgram() {
   ];
 
   return (
-    <div className="text-white space-y-12 mb-24">
+    <div className="text-white space-y-12 ">
       {/* Header Section */}
       <div className="text-center space-y-5">
-        <h1 className="text-[#F1AE40] text-[22px]  font-semibold">
-          Invite Friends Via Your Link
+        <h1 className="text-[#F1AE40] text-[22px]  font-semibold flex items-center justify-center gap-2.5">
+          <img src="/love-letter.png" alt="" className="w-[28px] " /> Invite
+          <span>Friends Via Your Link</span>
         </h1>
 
         <div className="flex items-center gap-3 bg-[#111240] rounded-[16px] p-5 border border-[#282b53]">
@@ -149,8 +153,9 @@ export default function ReferralRewardsProgram() {
 
       {/* Event Reward Details */}
       <div className="space-y-5">
-        <h2 className="text-[#F1AE40] text-center text-[22px]  font-semibold">
-          Event Reward Details
+        <h2 className="text-[#F1AE40] text-center text-[22px] flex items-center justify-center gap-2.5  font-semibold">
+          <img src="/gift-gif.png" alt="" className="w-[32px] " /> Event Reward
+          Details
         </h2>
 
         <div className="">
@@ -179,8 +184,9 @@ export default function ReferralRewardsProgram() {
 
       {/* Program Participation Requirements */}
       <div className="space-y-5">
-        <h2 className="text-[#F1AE40] text-center text-[22px]  font-semibold">
-          Program Participation Requirements
+        <h2 className="text-[#F1AE40] text-center text-[22px]  font-semibold flex items-center justify-center gap-2.5 ">
+          <img src="/fire.png" alt="" className="w-[32px] " /> Program
+          Participation Requirements
         </h2>
 
         <div className="space-y-4">
@@ -262,6 +268,7 @@ export default function ReferralRewardsProgram() {
           ))}
         </div>
       </div>
+      <RequirementsNote />
     </div>
   );
 }
