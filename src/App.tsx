@@ -1,7 +1,6 @@
 import { useRef, useState, type HTMLAttributes } from "react";
 import Confetti from "react-confetti";
 import CustomCursor from "./components/CustomCursor";
-import ReferralRewardsProgram from "./components/ReferralRewardsProgram";
 import {
   WheelOfFortune,
   type WheelOfFortuneRef,
@@ -165,7 +164,7 @@ function App() {
           <img
             src="/coupon25.png"
             alt="Gift 200 IPS"
-            className="w-[40px] h-[40px] object-cover"
+            className="w-[35px] h-[35px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#0A3AA2]">
             <p className="">Add 25% </p>
@@ -189,7 +188,7 @@ function App() {
           <img
             src="/coupon50.png"
             alt="Gift 200 IPS"
-            className="w-[40px] h-[40px] object-cover"
+            className="w-[35px] h-[35px] object-cover"
           />
           <div className="font-bold  text-wrap text-xs text-[#FF7B00]">
             <p className="">ExTRA</p>
@@ -339,10 +338,10 @@ function App() {
                 <img
                   src="/label.png"
                   alt="Background"
-                  className="w-full -mb-5 ml-2.5 h-full object-cover max-w-[400px] max-h-[184px]"
+                  className="w-full -mb-4 ml-2.5 h-full object-cover max-w-[400px] max-h-[242px]"
                 />
                 <WheelOfFortune
-                  className="max-w-[420px] lg:w-[420px]"
+                  className="max-w-[420px] lg:w-[420px] -mb-[21px]"
                   ref={fortuneWheelRef}
                   prizes={wheelPrizes}
                   wheelPointer={
@@ -374,9 +373,9 @@ function App() {
             </div>
 
             {/* Desc */}
-            <div className="max-w-[1000px] w-full mx-auto">
+            {/* <div className="max-w-[1000px] w-full mx-auto">
               <ReferralRewardsProgram />
-            </div>
+            </div> */}
           </div>
         </CustomCursor>
       </div>
