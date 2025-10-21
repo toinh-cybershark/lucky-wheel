@@ -2,32 +2,12 @@ import { useRef, useState, type HTMLAttributes } from "react";
 import Confetti from "react-confetti";
 import CustomCursor from "./components/CustomCursor";
 import ReferralRewardsProgram from "./components/ReferralRewardsProgram";
+import SparkleStars from "./components/SparkleStars";
 import {
   WheelOfFortune,
   type WheelOfFortuneRef,
 } from "./components/WheelOfFortune";
 import type { WheelOfFortunePrize } from "./types/wheel-of-fortune-prize";
-type SpinButtonProps = React.ComponentProps<"button">;
-function SpinButton({ disabled, ...props }: SpinButtonProps) {
-  return (
-    <button
-      {...props}
-      style={{
-        cursor: "inherit",
-      }}
-      className=""
-    >
-      <img
-        src={disabled ? "/spin-disabled.png" : "/spin.png"}
-        alt="Spin Button"
-        className="size-[96px] rounded-full "
-        style={{
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-        }}
-      />
-    </button>
-  );
-}
 
 export function PointerIcon(props: HTMLAttributes<HTMLImageElement>) {
   return (
@@ -312,13 +292,15 @@ function App() {
               className="w-full h-[860px] relative "
             >
               <div className="absolute  left-1/2 bottom-[235px] -translate-x-1/2">
-                <img
-                  src="/label.png"
-                  alt="Background"
-                  className="w-full -mb-5 ml-2.5 h-full object-cover max-w-[400px] max-h-[184px]"
-                />
+                <SparkleStars>
+                  <img
+                    src="/label.png"
+                    alt="Background"
+                    className="w-full  -mb-5 h-[242px] object-cover max-w-[440px] max-h-[242px] -ml-2.5"
+                  />
+                </SparkleStars>
                 <WheelOfFortune
-                  className="max-w-[420px] lg:w-[420px]"
+                  className="max-w-[420px] lg:w-[420px] -mb-[30px]"
                   ref={fortuneWheelRef}
                   prizes={wheelPrizes}
                   wheelPointer={
@@ -327,15 +309,6 @@ function App() {
                         filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
                       }}
                       className="w-[44px] h-[62px] text-white object-cover"
-                    />
-                  }
-                  wheelSpinButton={
-                    <SpinButton
-                      style={{
-                        filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
-                      }}
-                      onMouseUp={() => fortuneWheelRef.current?.spin()}
-                      disabled={fortuneWheelRef.current?.isSpinning}
                     />
                   }
                   onSpinStart={() => {

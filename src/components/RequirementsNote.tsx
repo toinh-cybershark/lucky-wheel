@@ -22,7 +22,7 @@ export default function RequirementsNote() {
         </div>
 
         <div className="relative rounded-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-purple-600 py-6 px-[46px]">
+          <div className="bg-[url('/bg-button-requirements.png')] bg-center bg-no-repeat bg-cover py-5 px-[46px]">
             <p className="text-white text-base text-center leading-relaxed font-medium">
               Spend $500+ during BF week (Nov 26 – Dec 2, GMT+0) to unlock a
               special spin with premium rewards - visible only in your

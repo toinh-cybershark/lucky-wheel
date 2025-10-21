@@ -9,6 +9,7 @@ import { twMerge } from "tailwind-merge";
 import { useWheelSpin } from "../hooks/useWheelSpin";
 import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { generateWheelGradient } from "../utils/wheel-gradient";
+import SpinButton from "./SpinButton";
 import WheelDots from "./WheelDots";
 export interface WheelOfFortuneRef {
   spin: () => void;
@@ -18,7 +19,6 @@ export interface WheelOfFortuneRef {
 export type WheelOfFortuneProps = {
   prizes: WheelOfFortunePrize[];
   wheelPointer: React.ReactNode;
-  wheelSpinButton: React.ReactNode;
   onSpinEnd: (prize: WheelOfFortunePrize) => void;
   onSpinStart?: () => void;
   wheelBorderColor?:
@@ -38,7 +38,6 @@ export const WheelOfFortune = forwardRef<
   const {
     prizes,
     wheelPointer,
-    wheelSpinButton,
     onSpinEnd,
     onSpinStart = () => {},
     wheelBorderColor = "#FFFFFF",
@@ -205,16 +204,21 @@ export const WheelOfFortune = forwardRef<
               ))}
           </div>
         </div>
-        {wheelSpinButton && (
-          <div
-            className={twMerge(
-              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-              isSpinning && "pointer-events-none saturate-20"
-            )}
-          >
-            {wheelSpinButton}
-          </div>
-        )}
+
+        <div
+          className={twMerge(
+            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+            isSpinning && "pointer-events-none"
+          )}
+        >
+          <SpinButton
+            style={{
+              filter: "drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3))",
+            }}
+            onMouseUp={() => spin()}
+            disabled={isSpinning}
+          />
+        </div>
       </div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+200px)] h-[calc(100%+200px)] z-0 overflow-visible pointer-events-none ">
         <img
