@@ -14,7 +14,7 @@ const InviteTab = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 p-4 bg-indigo-800 bg-opacity-40 rounded-xl">
-        <div className="text-blue-400">🌐</div>
+        <img src="/globe.png" alt="" className="size-[24px]" />
         <input
           type="text"
           value={link}

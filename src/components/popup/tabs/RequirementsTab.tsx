@@ -6,7 +6,7 @@ const RequirementsTab = () => (
       "One-time use, not stackable with other codes",
     ].map((text, idx) => (
       <div key={idx} className="flex items-start gap-3">
-        <div className="text-green-400 mt-1">✓</div>
+        <img src={"/check-icon.png"} className="size-[14px] mt-1" />
         <p>{text}</p>
       </div>
     ))}
