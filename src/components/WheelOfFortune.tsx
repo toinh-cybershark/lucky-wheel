@@ -11,6 +11,7 @@ import type { WheelOfFortunePrize } from "../types/wheel-of-fortune-prize";
 import { generateWheelGradient } from "../utils/wheel-gradient";
 import SpinButton from "./SpinButton";
 import WheelDots from "./WheelDots";
+import LuckyWheelInfoModal from "./popup/LuckyWheelInfoModal";
 export interface WheelOfFortuneRef {
   spin: () => void;
   isSpinning: boolean;
@@ -226,6 +227,8 @@ export const WheelOfFortune = forwardRef<
           className="w-full h-full object-contain animate-spin-reverse origin-center"
         />
       </div>
+      {/* Action Popup Desc */}
+      <LuckyWheelInfoModal />
     </div>
   );
 });

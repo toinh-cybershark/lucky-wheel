@@ -1,7 +1,6 @@
 import { useRef, useState, type HTMLAttributes } from "react";
 import Confetti from "react-confetti";
 import CustomCursor from "./components/CustomCursor";
-import ReferralRewardsProgram from "./components/ReferralRewardsProgram";
 import SparkleStars from "./components/SparkleStars";
 import {
   WheelOfFortune,
@@ -242,7 +241,7 @@ function App() {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 "
+        className="flex flex-col items-center justify-center w-full h-full min-h-screen gap-8 overflow-hidden"
       >
         {showModal && (
           <div
@@ -277,15 +276,15 @@ function App() {
         )}
         <CustomCursor>
           <div
-            className="w-[1200px] h-[860px] min-h-0 overflow-y-auto rounded-[16px] select-none"
+            className="w-[1200px] h-[860px] min-h-0  rounded-[16px] select-none"
             style={{
-              backgroundColor: "#030736",
+              backgroundColor: "transparent",
               cursor: "url('/mouse.png') 37 32, auto",
             }}
           >
             <div
               style={{
-                backgroundImage: "url('/background-container.png')",
+                // backgroundImage: "url('/background-container.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -323,9 +322,9 @@ function App() {
             </div>
 
             {/* Desc */}
-            <div className="max-w-[1000px] w-full mx-auto">
+            {/* <div className="max-w-[1000px] w-full mx-auto">
               <ReferralRewardsProgram />
-            </div>
+            </div> */}
           </div>
         </CustomCursor>
       </div>

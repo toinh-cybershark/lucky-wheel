@@ -19,8 +19,8 @@ export default function CustomCursor({ children }: CustomCursorProps) {
     const handleMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       setPos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
+        x: e.clientX - (rect.left - 40),
+        y: e.clientY - (rect.top - 40),
       });
     };
 
