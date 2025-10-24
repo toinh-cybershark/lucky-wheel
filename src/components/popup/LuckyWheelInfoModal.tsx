@@ -53,8 +53,8 @@ const LuckyWheelInfoModal = () => {
       {/* Popup Modal */}
       {isOpen &&
         createPortal(
-          <div className="fixed inset-0 bg-black/75  flex items-center justify-center z-50 ">
-            <div className="relative max-w-[640px] max-h-[740px]  h-fit w-full">
+          <div className="fixed inset-0 bg-black/75  flex items-start justify-center z-50 ">
+            <div className="relative max-w-[640px] max-h-[740px]  h-fit w-full mt-18">
               {/* Close */}
               <button
                 onClick={() => setIsOpen(false)}
