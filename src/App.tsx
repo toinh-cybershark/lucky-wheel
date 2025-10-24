@@ -40,6 +40,7 @@ function App() {
         proximity: 0.1,
         chance: 0.5,
       },
+      imagePopup: '/reward-received/free-200ips.png'
     },
     {
       color: "#feeef6",
@@ -64,6 +65,7 @@ function App() {
         proximity: 0.35,
         chance: 0.6,
       },
+      imagePopup: '/reward-received/free-20gb.png'
     },
     {
       color: "#fc9ebe",
@@ -88,6 +90,7 @@ function App() {
         proximity: 0.2,
         chance: 0.5,
       },
+      imagePopup: '/reward-received/sale-30.png'
     },
     {
       color: "#feeef6",
@@ -112,6 +115,7 @@ function App() {
         proximity: 0.2,
         chance: 1,
       },
+      imagePopup: ''
     },
     {
       color: "#fc9ebe",
@@ -136,6 +140,7 @@ function App() {
         proximity: 0.5,
         chance: 0.8,
       },
+      imagePopup: '/reward-received/extra-25.png'
     },
     {
       color: "#feeef6",
@@ -160,6 +165,7 @@ function App() {
         proximity: 0.1,
         chance: 0.8,
       },
+        imagePopup: '/reward-received/extra-50.png'
     },
     {
       color: "#fc9ebe",
@@ -184,6 +190,7 @@ function App() {
         proximity: 0.2,
         chance: 0.75,
       },
+      imagePopup: '/reward-received/sale-20.png'
     },
     {
       color: "#feeef6",
@@ -208,6 +215,7 @@ function App() {
         proximity: 0.2,
         chance: 0.1,
       },
+      imagePopup: ''
     },
   ];
   const total = wheelPrizes.reduce((prev, cur) => {
@@ -253,15 +261,12 @@ function App() {
               className="flex flex-col justify-center items-center gap-3 "
             >
               <div className="relative">
-                <div className={`w-[420px] relative ${animate} z-10`}>
+                <div className={`max-w-[474px] w-full relative ${animate} z-10`}>
                   <img
-                    src="/gift.png"
+                    src={prizeWinnerKey?.imagePopup}
                     alt="Gift"
-                    className="max-w-md w-full "
+                    className=" w-full object-cover"
                   />
-                  <div className="absolute bottom-[114px] text-2xl font-bold text-white flex items-center  left-1/2 -translate-x-1/2 ">
-                    {prizeWinnerKey?.value}
-                  </div>
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+200px)] h-[calc(100%+200px)] z-0 overflow-visible pointer-events-none ">
                   <img

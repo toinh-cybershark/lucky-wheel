@@ -8,7 +8,8 @@ export type WheelOfFortunePrize = {
   displayOrientation?: "horizontal" | "vertical";
   probability?: number;
   value: string;
-  nearMissEffect?: NearMissEffect
+  nearMissEffect?: NearMissEffect,
+  imagePopup:string
 };
 interface NearMissEffect {
   /**
