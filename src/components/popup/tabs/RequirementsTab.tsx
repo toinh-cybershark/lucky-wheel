@@ -1,5 +1,5 @@
 const RequirementsTab = () => (
-  <div className="space-y-4 text-white border border-[#414b97] rounded-2xl p-4 bg-[#253074]">
+  <div className="space-y-4 text-white border border-[#414b978b] rounded-2xl p-4 bg-[rgba(255,255,255,0.04)]">
     {[
       "Applies only to Pricing packages (Reseller packages excluded)",
       "Coupons are valid until Dec 31, 2025",

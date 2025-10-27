@@ -13,7 +13,7 @@ const InviteTab = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3 p-4 bg-indigo-800 bg-opacity-40 rounded-xl">
+      <div className="flex items-center gap-3 px-4 py-2.5 border border-[#414b978b] bg-[rgba(255,255,255,0.04)] bg-opacity-40 rounded-xl">
         <img src="/globe.png" alt="" className="size-[24px]" />
         <input
           type="text"
@@ -23,7 +23,7 @@ const InviteTab = () => {
         />
         <button
           onClick={handleCopy}
-          className="p-2 hover:bg-indigo-700 rounded-lg transition-all"
+          className="p-2 hover:scale-90 rounded-lg transition-all cursor-pointer"
         >
           {copied ? (
             <Check size={18} className="text-green-400" />

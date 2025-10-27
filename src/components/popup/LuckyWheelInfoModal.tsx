@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { twMerge } from "tailwind-merge";
 import EventDetailsTab from "./tabs/EventDetailsTab";
 import InviteTab from "./tabs/InviteTab";
 import RequirementsTab from "./tabs/RequirementsTab";
@@ -54,17 +55,22 @@ const LuckyWheelInfoModal = () => {
       {isOpen &&
         createPortal(
           <div className="fixed inset-0 bg-black/75  flex items-start justify-center z-50 ">
-            <div className="relative max-w-[640px] max-h-[740px]  h-fit w-full mt-18">
+            <div
+              className={twMerge(
+                "relative max-w-[640px] max-h-[640px]  w-full mt-18 ",
+                activeTab === "details" ? "h-full" : "h-[520px]"
+              )}
+            >
               {/* Close */}
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute -top-[36px] -right-[28px] w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-all shadow-lg z-10"
+                className="absolute -top-[36px] cursor-pointer -right-[28px] w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center text-white transition-all shadow-lg z-10"
               >
                 <X size={20} />
               </button>
-              <div className="bg-gradient-to-br from-[#263493] to-[#11194D] rounded-2xl w-full   shadow-2xl   h-full p-7 flex flex-col gap-y-7">
+              <div className="bg-gradient-to-br from-[#263493] to-[#11194D] rounded-3xl w-full   shadow-2xl   h-full p-7 flex flex-col gap-y-7">
                 {/* Tabs */}
-                <div className="flex gap-1 p-1 rounded-2xl bg-[#0E143B]">
+                <div className="flex gap-1 p-1 rounded-full bg-[#0E143B]">
                   <TabButton
                     icon={
                       <img
@@ -111,7 +117,7 @@ const LuckyWheelInfoModal = () => {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 min-h-0 overflow-y-auto">
+                <div className="flex-1 overflow-y-auto min-h-0">
                   {activeTab === "details" && <EventDetailsTab />}
                   {activeTab === "requirements" && <RequirementsTab />}
                   {activeTab === "invite" && <InviteTab />}

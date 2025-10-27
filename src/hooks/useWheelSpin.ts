@@ -21,8 +21,7 @@ export function useWheelSpin(
   animationDurationInMs: number,
   wheelRotationsCount: number,
   wheelRef: RefObject<HTMLDivElement | null>,
-  pointerRef: RefObject<HTMLDivElement | null>,
-
+  pointerRef: RefObject<HTMLDivElement | null>
 ) {
   const [, startTransition] = useTransition();
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
@@ -119,10 +118,12 @@ export function useWheelSpin(
       const shouldUseNearMiss = nearMiss && Math.random() < nearMiss.chance;
 
       if (shouldUseNearMiss) {
-        if (nearMiss.targetDirection === 'before') {
+        if (nearMiss.targetDirection === "before") {
           randomOffset = nearMiss.proximity * wheelSegmentDegrees;
-        } else { // targetDirection === 'after'
-          randomOffset = wheelSegmentDegrees - (nearMiss.proximity * wheelSegmentDegrees);
+        } else {
+          // targetDirection === 'after'
+          randomOffset =
+            wheelSegmentDegrees - nearMiss.proximity * wheelSegmentDegrees;
         }
       } else {
         const safeZoneMargin = wheelSegmentDegrees * 0.1;
@@ -165,7 +166,10 @@ export function useWheelSpin(
       if (DEFAULT_ENABLE_POINTER_TICK) {
         const pRef = pointerRef.current;
         if (pRef) {
-          setTimeout(() => pRef.classList.remove("pointer-tick-animation"), 200);
+          setTimeout(
+            () => pRef.classList.remove("pointer-tick-animation"),
+            200
+          );
         }
       }
     }

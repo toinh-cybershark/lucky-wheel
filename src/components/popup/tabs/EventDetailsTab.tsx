@@ -94,21 +94,27 @@ const rewards = [
 ];
 
 const EventDetailsTab = () => (
-  <div className=" border border-[#414b97] rounded-2xl  odd:bg-[#2d398f] even:bg-[#243182] [&>div+div]:border-t [&>div+div]:border-[#414b97]">
+  <div className=" border border-[#414b978b] rounded-2xl   [&>div+div]:border-t [&>div+div]:border-[rgba(255,255,255,0.04)]">
     {rewards.map((reward, index) => (
       <div
         key={reward.id}
         className={twMerge(
-          "flex items-center   text-white  h-[72px] px-6 ",
+          "flex items-center   text-white  h-[72px] ",
           index == 0 && "rounded-t-[16px]",
           index == rewards.length - 1 && "rounded-b-[16px]"
         )}
+        style={{
+          backgroundColor:
+            index % 2 === 0
+              ? "rgba(255,255,255,0.04)" // 4%
+              : "rgba(255,255,255,0.02)", // 2%
+        }}
       >
-        <div className="w-full max-w-[196px] flex items-center gap-x-4 ">
+        <div className="w-full max-w-[196px] flex items-center gap-x-4 pl-6">
           {reward.icon}
           <h3 className="font-semibold text-sm mb-1">{reward.title}</h3>
         </div>
-        <div className="flex-1 flex items-center h-full self-stretch min-w-0  ">
+        <div className="flex-1 flex items-center h-full self-stretch min-w-0  border-l border-[rgba(255,255,255,0.04)] px-6">
           <p className="text-sm  leading-relaxed">{reward.description}</p>
         </div>
       </div>
