@@ -12,6 +12,7 @@ import { generateWheelGradient } from "../utils/wheel-gradient";
 import SpinButton from "./SpinButton";
 import WheelDots from "./WheelDots";
 import LuckyWheelInfoModal from "./popup/LuckyWheelInfoModal";
+
 export interface WheelOfFortuneRef {
   spin: () => void;
   isSpinning: boolean;
@@ -30,8 +31,12 @@ export type WheelOfFortuneProps = {
   wheelRotationsCount?: number;
   className?: string;
 };
+
 const CHASING_ANIMATION_SPEED_MS = 1300;
+const CHASING_ANIMATION_SLOW_SPEED_MS = 6200;
+const SLOWDOWN_THRESHOLD_MS = 2500;
 const BORDERCIRCLESOFFSETANGLE = 21.5;
+
 export const WheelOfFortune = forwardRef<
   WheelOfFortuneRef,
   WheelOfFortuneProps
@@ -46,15 +51,23 @@ export const WheelOfFortune = forwardRef<
     wheelRotationsCount = 5,
     className,
   } = props;
+
   const [activeDotIndex, setActiveDotIndex] = useState<number | null>(null);
-  const [showDebugLines] = useState(false); // test debug line when development
+  const [showDebugLines] = useState(false);
+  const [dotAnimationSpeed, setDotAnimationSpeed] = useState(
+    CHASING_ANIMATION_SPEED_MS
+  );
+
   const rotatingDivRef = useRef<HTMLDivElement>(null);
   const wheelRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLDivElement>(null);
+  const spinStartTimeRef = useRef<number>(0);
+
   const wheelSegmentDegrees =
     prizes.length > 0 ? parseFloat((360 / prizes.length).toFixed(4)) : 0;
   const animationDurationInSeconds = Math.round(animationDurationInMs / 1000);
   const wheelGradient = generateWheelGradient(prizes, wheelSegmentDegrees);
+
   const {
     isCompleted,
     isSpinning,
@@ -71,11 +84,35 @@ export const WheelOfFortune = forwardRef<
     rotatingDivRef,
     pointerRef
   );
+
   const borderCircles = Array.from({ length: 8 });
+
+  useEffect(() => {
+    if (!isSpinning) {
+      setDotAnimationSpeed(CHASING_ANIMATION_SPEED_MS);
+      return;
+    }
+
+    spinStartTimeRef.current = Date.now();
+
+    const checkSpeedInterval = setInterval(() => {
+      const elapsed = Date.now() - spinStartTimeRef.current;
+      const remaining = animationDurationInMs - elapsed;
+
+      if (remaining <= SLOWDOWN_THRESHOLD_MS && remaining > 0) {
+        setDotAnimationSpeed(CHASING_ANIMATION_SLOW_SPEED_MS);
+      }
+    }, 100);
+
+    return () => clearInterval(checkSpeedInterval);
+  }, [isSpinning, animationDurationInMs]);
+
   useEffect(() => {
     let intervalId: number | undefined;
+
     if (isSpinning) {
-      const speedPerDot = CHASING_ANIMATION_SPEED_MS / borderCircles.length;
+      const speedPerDot = dotAnimationSpeed / borderCircles.length;
+
       intervalId = setInterval(() => {
         setActiveDotIndex((prevIndex) => {
           if (prevIndex === null || prevIndex <= 0) {
@@ -87,16 +124,19 @@ export const WheelOfFortune = forwardRef<
     } else {
       setActiveDotIndex(null);
     }
+
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
       }
     };
-  }, [isSpinning, borderCircles.length]);
+  }, [isSpinning, dotAnimationSpeed, borderCircles.length]);
+
   useImperativeHandle(ref, () => ({
     isSpinning,
     spin,
   }));
+
   return (
     <div
       className={twMerge(
@@ -129,6 +169,7 @@ export const WheelOfFortune = forwardRef<
             })}
           </div>
         )}
+
         {wheelPointer && (
           <div
             ref={pointerRef}
@@ -138,6 +179,7 @@ export const WheelOfFortune = forwardRef<
             {wheelPointer}
           </div>
         )}
+
         <div
           ref={wheelRef}
           className={`absolute top-0 left-0 w-full h-full overflow-hidden rounded-[50%] flex justify-center items-center`}
@@ -189,10 +231,12 @@ export const WheelOfFortune = forwardRef<
                 </div>
               </div>
             ))}
+
             <WheelDots
               prizeLength={prizes.length}
               wheelSegmentDegrees={wheelSegmentDegrees}
             />
+
             {showDebugLines &&
               prizes.map((_, index) => (
                 <div
@@ -221,13 +265,14 @@ export const WheelOfFortune = forwardRef<
           />
         </div>
       </div>
+
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+200px)] h-[calc(100%+200px)] z-0 overflow-visible pointer-events-none ">
         <img
           src="/sun-light.png"
           className="w-full h-full object-contain animate-spin-reverse origin-center"
         />
       </div>
-      {/* Action Popup Desc */}
+
       <LuckyWheelInfoModal />
     </div>
   );
