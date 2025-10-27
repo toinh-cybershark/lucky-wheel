@@ -12,7 +12,7 @@ const InviteTab = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center gap-3 px-4 py-2.5 border border-[#414b978b] bg-[rgba(255,255,255,0.04)] bg-opacity-40 rounded-xl">
         <img src="/globe.png" alt="" className="size-[24px]" />
         <input

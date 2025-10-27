@@ -57,7 +57,7 @@ const LuckyWheelInfoModal = () => {
           <div className="fixed inset-0 bg-black/75  flex items-start justify-center z-50 ">
             <div
               className={twMerge(
-                "relative max-w-[640px] max-h-[640px]  w-full mt-18 ",
+                "relative max-w-[660px] max-h-[660px]  w-full mt-[144px] ",
                 activeTab === "details" ? "h-full" : "h-[520px]"
               )}
             >
@@ -68,7 +68,7 @@ const LuckyWheelInfoModal = () => {
               >
                 <X size={20} />
               </button>
-              <div className="bg-gradient-to-br from-[#263493] to-[#11194D] rounded-3xl w-full   shadow-2xl   h-full p-7 flex flex-col gap-y-7">
+              <div className="bg-gradient-to-br from-[#263493] to-[#11194D] rounded-3xl w-full   shadow-2xl   h-full p-7 flex flex-col gap-y-6">
                 {/* Tabs */}
                 <div className="flex gap-1 p-1 rounded-full bg-[#0E143B]">
                   <TabButton
